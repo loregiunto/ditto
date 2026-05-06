@@ -64,13 +64,38 @@ describe("GET /api/listings/map", () => {
     expect(arg?.where).toEqual({ status: "ACTIVE" });
   });
 
-  it("never selects addressFull from the DB", async () => {
+  it("queries the DB with an exact public-fields whitelist (no addressFull, ever)", async () => {
+    // Structural privacy guarantee: any regression that adds `addressFull` to
+    // the select — directly or via spread — fails this test. We assert the
+    // full set of selected keys, not just the absence of `addressFull`, so the
+    // test breaks if a future change widens the projection by accident.
     vi.mocked(prisma.listing.findMany).mockResolvedValue([]);
     await GET();
     const arg = vi.mocked(prisma.listing.findMany).mock.calls[0][0];
     const select = (arg?.select ?? {}) as Record<string, unknown>;
+    const allowedTopLevel = new Set([
+      "id",
+      "title",
+      "addressDisplay",
+      "latitude",
+      "longitude",
+      "hourlyPriceCents",
+      "hostType",
+      "photos",
+      "availabilityRules",
+    ]);
+    expect(new Set(Object.keys(select))).toEqual(allowedTopLevel);
     expect(select.addressFull).toBeUndefined();
-    expect(select.addressDisplay).toBe(true);
+
+    // The nested selects must also avoid addressFull and stay minimal.
+    const photos = select.photos as { select?: Record<string, unknown> };
+    expect(new Set(Object.keys(photos.select ?? {}))).toEqual(
+      new Set(["url", "order"]),
+    );
+    const rules = select.availabilityRules as { select?: Record<string, unknown> };
+    expect(new Set(Object.keys(rules.select ?? {}))).toEqual(
+      new Set(["dayOfWeek", "startMinute", "endMinute"]),
+    );
   });
 
   it("excludes ACTIVE listings without availability in the next 6 hours", async () => {

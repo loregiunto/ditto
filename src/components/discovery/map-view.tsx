@@ -59,12 +59,17 @@ function makeMeElement(): HTMLElement {
   return el;
 }
 
+export type LoadStatus =
+  | { kind: "loading" }
+  | { kind: "ok"; count: number }
+  | { kind: "error" };
+
 type Props = {
   onGeoStatusChange?: (status: GeoStatus) => void;
-  onListingsLoaded?: (count: number) => void;
+  onLoadStatusChange?: (status: LoadStatus) => void;
 };
 
-export function MapView({ onGeoStatusChange, onListingsLoaded }: Props) {
+export function MapView({ onGeoStatusChange, onLoadStatusChange }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapboxMap | null>(null);
   const markersRef = useRef<Map<string, MapboxMarker>>(new Map());
@@ -134,7 +139,8 @@ export function MapView({ onGeoStatusChange, onListingsLoaded }: Props) {
       const mapboxgl = mapboxglModule;
       if (!map || !mapboxgl) return;
 
-      let listings: PublicMapListing[] = [];
+      onLoadStatusChange?.({ kind: "loading" });
+      let listings: PublicMapListing[] | null = null;
       try {
         const res = await fetch("/api/listings/map", { cache: "no-store" });
         if (res.ok) {
@@ -142,12 +148,17 @@ export function MapView({ onGeoStatusChange, onListingsLoaded }: Props) {
           listings = data.listings;
         }
       } catch {
-        // Network failure → empty state takes over.
+        // Fall through to error path below.
       }
       if (cancelled) return;
 
+      if (listings === null) {
+        onLoadStatusChange?.({ kind: "error" });
+        return;
+      }
+
       listingsRef.current = new Map(listings.map((l) => [l.id, l]));
-      onListingsLoaded?.(listings.length);
+      onLoadStatusChange?.({ kind: "ok", count: listings.length });
 
       const featureCollection: GeoJSON.FeatureCollection<GeoJSON.Point> = {
         type: "FeatureCollection",

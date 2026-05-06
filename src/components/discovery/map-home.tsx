@@ -14,19 +14,29 @@ type Props = {
 };
 
 type GeoStatus = "pending" | "granted" | "denied" | "unsupported";
+type LoadStatus =
+  | { kind: "loading" }
+  | { kind: "ok"; count: number }
+  | { kind: "error" };
 
 export function MapHome({ authedUserName }: Props) {
   const [geoStatus, setGeoStatus] = useState<GeoStatus>("pending");
   const [bannerDismissed, setBannerDismissed] = useState(false);
-  const [listingCount, setListingCount] = useState<number | null>(null);
+  const [loadStatus, setLoadStatus] = useState<LoadStatus>({ kind: "loading" });
+  const [retryNonce, setRetryNonce] = useState(0);
 
   const showGeoBanner =
     !bannerDismissed && (geoStatus === "denied" || geoStatus === "unsupported");
-  const showEmptyState = listingCount === 0;
+  const showLoadError = loadStatus.kind === "error";
+  const showEmptyState = loadStatus.kind === "ok" && loadStatus.count === 0;
 
   return (
     <div className="hr-map-shell">
-      <MapView onGeoStatusChange={setGeoStatus} onListingsLoaded={setListingCount} />
+      <MapView
+        key={retryNonce}
+        onGeoStatusChange={setGeoStatus}
+        onLoadStatusChange={setLoadStatus}
+      />
 
       <header className="hr-topbar">
         <Link href="/" className="hr-brand">
@@ -108,7 +118,33 @@ export function MapHome({ authedUserName }: Props) {
         </div>
       )}
 
-      {showEmptyState && !showGeoBanner && (
+      {showLoadError && !showGeoBanner && (
+        <div className="hr-banner warn" role="alert" data-testid="load-error-banner">
+          <span className="hr-banner-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+          </span>
+          <div>
+            <strong>Impossibile caricare i bagni.</strong> Controlla la connessione
+            e riprova.
+          </div>
+          <button
+            type="button"
+            className="hr-banner-action"
+            onClick={() => {
+              setLoadStatus({ kind: "loading" });
+              setRetryNonce((n) => n + 1);
+            }}
+          >
+            Riprova
+          </button>
+        </div>
+      )}
+
+      {showEmptyState && !showGeoBanner && !showLoadError && (
         <div className="hr-empty-pill" data-testid="empty-state">
           Nessun bagno disponibile nella tua zona nelle prossime ore
         </div>
