@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { PublicMapListing } from "@/lib/listings/discovery";
 
 type Props = {
@@ -93,14 +94,9 @@ export function ListingPreviewCard({ listing, onClose }: Props) {
         </div>
 
         <div className="hr-pc-cta">
-          <button
-            type="button"
-            className="hr-btn"
-            disabled
-            title="Disponibile a breve"
-          >
+          <Link className="hr-btn" href={`/listings/${listing.id}`}>
             Dettagli
-          </button>
+          </Link>
           <button
             type="button"
             className="hr-btn hr-btn-accent"

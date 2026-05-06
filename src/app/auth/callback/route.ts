@@ -7,7 +7,12 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type");
-  const next = searchParams.get("next") ?? "/dashboard";
+  const requestedNext =
+    searchParams.get("next") ?? searchParams.get("redirect") ?? "/dashboard";
+  const next =
+    requestedNext.startsWith("/") && !requestedNext.startsWith("//")
+      ? requestedNext
+      : "/dashboard";
 
   // Handle email confirmation (sign up verify)
   if (token_hash && type) {

@@ -34,6 +34,11 @@ enum ListingStatus {
   INACTIVE
 }
 
+enum BookingMode {
+  INSTANT
+  REQUEST
+}
+
 model Listing {
   id               String         @id @default(uuid())
   hostId           String
@@ -46,6 +51,7 @@ model Listing {
   latitude         Float
   longitude        Float
   hourlyPriceCents Int
+  bookingMode      BookingMode    @default(INSTANT)
   status           ListingStatus  @default(DRAFT)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
