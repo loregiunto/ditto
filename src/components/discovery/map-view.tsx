@@ -111,7 +111,7 @@ export function MapView({
       const mapboxgl = mapboxglModule;
       if (cancelled || !containerRef.current) return;
 
-      const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+      const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
       if (token) {
         mapboxgl.accessToken = token;
       }

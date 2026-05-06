@@ -3,17 +3,17 @@ import { test, expect } from "@playwright/test";
 /**
  * E2E per US-005 — Mappa interattiva.
  *
- * Skippato di default: richiede NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN per il rendering
+ * Skippato di default: richiede NEXT_PUBLIC_MAPBOX_TOKEN per il rendering
  * del tile style. La logica testata (DOM dei marker + popup) è indipendente da
  * WebGL: i marker sono elementi HTML reali ancorati alla mappa.
  */
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 test.describe("US-005 discovery map", () => {
   test.skip(
     !MAPBOX_TOKEN,
-    "Set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN to run the discovery map e2e suite",
+    "Set NEXT_PUBLIC_MAPBOX_TOKEN to run the discovery map e2e suite",
   );
 
   test("happy path: pin click apre la preview card", async ({ page, context }) => {

@@ -3,11 +3,11 @@ import { test, expect } from "@playwright/test";
 /**
  * E2E per US-006 — Ricerca per indirizzo.
  *
- * Skippato senza NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: la mappa Mapbox non si carica
+ * Skippato senza NEXT_PUBLIC_MAPBOX_TOKEN: la mappa Mapbox non si carica
  * senza token e il filtro per raggio non può essere verificato dal DOM dei pin.
  */
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 const LISTINGS_PAYLOAD = {
   listings: [
@@ -66,7 +66,7 @@ const GEOCODE_PAYLOAD = {
 test.describe("US-006 address search", () => {
   test.skip(
     !MAPBOX_TOKEN,
-    "Set NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN to run the address search e2e suite",
+    "Set NEXT_PUBLIC_MAPBOX_TOKEN to run the address search e2e suite",
   );
 
   test.beforeEach(async ({ context }) => {
