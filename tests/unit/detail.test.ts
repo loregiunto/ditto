@@ -12,10 +12,12 @@ type DetailListingFixture = {
   description: string;
   addressFull: string;
   addressDisplay: string;
+  latitude: number;
+  longitude: number;
   hourlyPriceCents: number;
   hostType: "PRIVATE" | "BUSINESS";
   bookingMode: "INSTANT" | "REQUEST";
-  photos: { url: string; order: number }[];
+  photos: { id: string; url: string; order: number }[];
   host: {
     name: string | null;
     image: string | null;
@@ -31,13 +33,15 @@ const baseListing: DetailListingFixture = {
   description: "Bagno pulito, accessibile e ben illuminato.",
   addressFull: SECRET_ADDRESS,
   addressDisplay: "Trastevere",
+  latitude: 41.889,
+  longitude: 12.469,
   hourlyPriceCents: 350,
   hostType: "PRIVATE",
   bookingMode: "INSTANT",
   photos: [
-    { url: "https://cdn.example.com/second.jpg", order: 2 },
-    { url: "https://cdn.example.com/cover.jpg", order: 0 },
-    { url: "https://cdn.example.com/first.jpg", order: 1 },
+    { id: "p2", url: "https://cdn.example.com/second.jpg", order: 2 },
+    { id: "p0", url: "https://cdn.example.com/cover.jpg", order: 0 },
+    { id: "p1", url: "https://cdn.example.com/first.jpg", order: 1 },
   ],
   host: {
     name: "Marco",

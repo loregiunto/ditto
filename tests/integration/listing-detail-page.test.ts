@@ -45,6 +45,8 @@ type ListingRow = {
   description: string;
   addressFull: string;
   addressDisplay: string;
+  latitude: number;
+  longitude: number;
   hourlyPriceCents: number;
   hostType: "PRIVATE" | "BUSINESS";
   bookingMode: "INSTANT" | "REQUEST";
@@ -54,7 +56,7 @@ type ListingRow = {
     image: string | null;
     identityStatus: string | null;
   };
-  photos: { url: string; order: number }[];
+  photos: { id: string; url: string; order: number }[];
   availabilityRules: {
     dayOfWeek: number;
     startMinute: number;
@@ -77,40 +79,31 @@ const authenticatedUser = {
 };
 
 function makeListing(overrides: Partial<ListingRow> = {}): ListingRow {
+  const { host: hostOverride, photos, availabilityRules, ...rest } = overrides;
   return {
     id: "listing-1",
     title: "Bagno del Cortile",
     description: "Bagno pulito, accessibile e ben illuminato.",
     addressFull: SECRET_ADDRESS,
     addressDisplay: "Trastevere",
+    latitude: 41.889,
+    longitude: 12.469,
     hourlyPriceCents: 350,
     hostType: "PRIVATE",
     bookingMode: "INSTANT",
     status: "ACTIVE",
+    ...rest,
     host: {
       name: "Marco",
       image: null,
       identityStatus: "verified",
+      ...hostOverride,
     },
-    photos: [
-      { url: "https://cdn.example.com/second.jpg", order: 1 },
-      { url: "https://cdn.example.com/cover.jpg", order: 0 },
+    photos: photos ?? [
+      { id: "p1", url: "https://cdn.example.com/second.jpg", order: 1 },
+      { id: "p0", url: "https://cdn.example.com/cover.jpg", order: 0 },
     ],
-    availabilityRules: [
-      { dayOfWeek: 0, startMinute: 9 * 60, endMinute: 10 * 60 },
-    ],
-    ...overrides,
-    host: {
-      name: "Marco",
-      image: null,
-      identityStatus: "verified",
-      ...overrides.host,
-    },
-    photos: overrides.photos ?? [
-      { url: "https://cdn.example.com/second.jpg", order: 1 },
-      { url: "https://cdn.example.com/cover.jpg", order: 0 },
-    ],
-    availabilityRules: overrides.availabilityRules ?? [
+    availabilityRules: availabilityRules ?? [
       { dayOfWeek: 0, startMinute: 9 * 60, endMinute: 10 * 60 },
     ],
   };

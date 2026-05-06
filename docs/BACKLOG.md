@@ -203,7 +203,7 @@ Dopo questa storia, un utente può aprire un pannello filtri, applicare criteri,
 
 #### US-008: Pagina di dettaglio listing
 
-**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3 | **Status:** IN PROGRESS
+**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3 | **Status:** DONE
 
 **Story**
 Come Marco,
