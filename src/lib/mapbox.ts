@@ -75,4 +75,53 @@ export async function geocodeAddress(address: string): Promise<GeocodeResult> {
   };
 }
 
+export type GeocodeSuggestion = {
+  id: string;
+  label: string;
+  addressDisplay: string;
+  latitude: number;
+  longitude: number;
+};
+
+type MapboxAutocompleteFeature = MapboxFeature & { id?: string };
+
+export async function searchAddresses(
+  q: string,
+  opts: { limit?: number; country?: string } = {},
+): Promise<GeocodeSuggestion[]> {
+  const token = process.env.MAPBOX_ACCESS_TOKEN;
+  if (!token) {
+    throw new GeocodingError("MAPBOX_ACCESS_TOKEN is not configured");
+  }
+
+  const trimmed = q.trim();
+  if (!trimmed) return [];
+
+  const limit = opts.limit ?? 5;
+  const country = opts.country ?? "IT";
+
+  const url =
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(trimmed)}.json` +
+    `?autocomplete=true&country=${encodeURIComponent(country)}&limit=${limit}` +
+    `&access_token=${token}`;
+
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) {
+    throw new GeocodingError(`Mapbox HTTP ${res.status}`);
+  }
+
+  const data = (await res.json()) as { features?: MapboxAutocompleteFeature[] };
+  const features = data.features ?? [];
+  return features.map((f, i) => {
+    const [longitude, latitude] = f.center;
+    return {
+      id: f.id ?? `${longitude},${latitude},${i}`,
+      label: f.place_name,
+      addressDisplay: deriveDisplay(f),
+      latitude,
+      longitude,
+    };
+  });
+}
+
 export const __testing = { deriveDisplay };

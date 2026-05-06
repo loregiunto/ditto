@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HomeRest — Cerca per indirizzo (Mobile)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .streets path { stroke: #DCD0B8; fill: none; }
+    .streets .major { stroke: #CFC0A4; stroke-width: 5; }
+    .streets .minor { stroke: #DCD0B8; stroke-width: 2.5; }
+    .streets .alley { stroke: #E5DBC4; stroke-width: 1.5; }
+    .area-label {
+      font-family: var(--font-sans); font-size: 9px;
+      font-weight: 600;
+      fill: oklch(0.45 0.05 60);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    /* Smaller pins for the mobile demo */
+    .mobile-frame .pin .pin-bubble { padding: 5px 10px 5px 7px; font-size: 11px; }
+    .mobile-frame .pin .pin-dot { width: 14px; height: 14px; font-size: 9px; }
+    .mobile-frame .cluster-bubble { width: 42px; height: 42px; font-size: 15px; border-width: 2px; }
+    .mobile-frame .cluster.lg .cluster-bubble { width: 48px; height: 48px; font-size: 17px; }
+    .mobile-frame .cluster.sm .cluster-bubble { width: 36px; height: 36px; font-size: 13px; }
+
+    .mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 420px));
+      gap: 36px;
+      align-items: start;
+      justify-content: center;
+    }
+    .mobile-stack { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .stack-label {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink-3);
+      letter-spacing: 0.02em;
+    }
+    .stack-label strong {
+      font-style: normal;
+      font-weight: 500;
+      color: var(--terracotta-deep);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      background: var(--terracotta-soft);
+      padding: 2px 9px;
+      border-radius: 999px;
+      margin-right: 8px;
+    }
+
+    /* Small mobile radius circle */
+    .m-radius {
+      position: absolute;
+      z-index: 6;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      width: 220px; height: 220px;
+    }
+    .m-radius .radius-circle {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: radial-gradient(circle at center,
+        oklch(0.62 0.13 45 / 0.04) 0%,
+        oklch(0.62 0.13 45 / 0.10) 100%);
+      border: 2px dashed oklch(0.62 0.13 45 / 0.55);
+      position: relative;
+    }
+    .m-radius .radius-marker {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -100%) rotate(-45deg);
+      width: 28px; height: 36px;
+      background: var(--terracotta);
+      border-radius: 14px 14px 14px 3px;
+      border: 2.5px solid #fff;
+      box-shadow: 0 4px 10px rgba(36,28,18,0.25);
+    }
+    .m-radius .radius-marker::after {
+      content: ""; position: absolute;
+      top: 50%; left: 50%;
+      width: 9px; height: 9px;
+      background: #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .m-radius .radius-label {
+      position: absolute;
+      top: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      padding: 3px 9px;
+      border-radius: var(--r-pill);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--ink-2);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .m-radius .radius-label strong { color: var(--terracotta-deep); font-weight: 600; }
+
+    /* Mobile dropdown and pill use the styles from shared.css */
+
+    /* Compact bottom sheet for selected variant */
+    .m-sheet.compact .m-sheet-content { padding: 8px 14px 12px; }
+    .m-sheet.compact .m-sheet-photo { width: 76px; height: 76px; }
+    .m-sheet.compact .m-sheet-name { font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="mobile-page">
+    <h1 class="mobile-caption">Cerca, <em>seleziona, parti</em></h1>
+    <p class="mobile-sub">Indirizzo precisi sul tuo cammino: trova un bagno nel raggio di 1 km, prima ancora di arrivare.</p>
+
+    <div class="mobile-grid">
+
+      <!-- ============ VARIANT 1: Search open with autocomplete ============ -->
+      <div class="mobile-stack">
+        <div class="stack-label"><strong>Stato A</strong>autocompletamento</div>
+
+        <div class="mobile-frame">
+          <!-- Status bar -->
+          <div class="m-statusbar">
+            <span>9:41</span>
+            <div class="icons">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-8H2v8zm5 0h2V10H7v12zm5 0h2V6h-2v16zm5 0h2v-4h-2v4zm5 0h2V2h-2v20z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="18" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><rect x="4" y="9" width="13" height="6" rx="0.5" fill="currentColor"/></svg>
+            </div>
+          </div>
+
+          <!-- Map (background) -->
+          <div class="m-map">
+            <svg class="streets" viewBox="0 0 420 880" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.5;">
+              <path d="M -20 200 q 80 60 180 50 t 280 -10" stroke="oklch(0.83 0.05 220)" stroke-width="22" fill="none" opacity="0.5"/>
+              <path class="major" d="M -20 380 C 100 360, 200 420, 320 380 S 460 360, 460 360" />
+              <path class="major" d="M 130 -20 L 180 900" />
+              <path class="major" d="M 280 -20 L 320 900" />
+              <path class="minor" d="M -20 600 L 460 600" />
+              <path class="minor" d="M -20 280 L 460 280" />
+              <text class="area-label" x="60" y="320">Trastevere</text>
+              <text class="area-label" x="220" y="200">Centro</text>
+            </svg>
+
+            <div class="me-dot" style="left: 50%; top: 56%;"></div>
+
+            <!-- Faded pins (search not yet committed) -->
+            <div class="pin private" style="left: 38%; top: 40%; opacity: 0.55;">
+              <div class="pin-bubble"><span class="pin-dot">€</span><span>3,50</span></div>
+            </div>
+            <div class="pin business" style="left: 62%; top: 36%; opacity: 0.55;">
+              <div class="pin-bubble"><span class="pin-dot">€</span><span>2,00</span></div>
+            </div>
+            <div class="pin private" style="left: 70%; top: 60%; opacity: 0.55;">
+              <div class="pin-bubble"><span class="pin-dot">€</span><span>4,00</span></div>
+            </div>
+          </div>
+
+          <!-- Search bar (mobile) -->
+          <div class="m-search-bar">
+            <svg class="ms-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" value="Piazza Duomo" placeholder="Cerca un indirizzo…" />
+            <button class="ms-locate" title="Usa la mia posizione">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            </button>
+          </div>
+
+          <!-- Mobile dropdown -->
+          <div class="m-search-dropdown">
+            <div class="as-dd-header">
+              <span class="as-dd-label">Suggerimenti</span>
+              <span class="as-dd-attribution">via <strong>Mapbox</strong></span>
+            </div>
+            <ul class="as-results">
+              <li class="as-result active" role="option">
+                <div class="as-result-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div class="as-result-body">
+                  <div class="as-result-primary"><mark>Piazza Duomo</mark></div>
+                  <div class="as-result-secondary">20122 Milano MI · Centro</div>
+                </div>
+                <div class="as-result-distance">580 km</div>
+              </li>
+              <li class="as-result">
+                <div class="as-result-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div class="as-result-body">
+                  <div class="as-result-primary"><mark>Piazza del Duomo</mark></div>
+                  <div class="as-result-secondary">50122 Firenze FI · San Giovanni</div>
+                </div>
+                <div class="as-result-distance">270 km</div>
+              </li>
+              <li class="as-result">
+                <div class="as-result-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+                </div>
+                <div class="as-result-body">
+                  <div class="as-result-primary"><mark>Piazza Duomo</mark> 2</div>
+                  <div class="as-result-secondary">95124 Catania CT</div>
+                </div>
+                <div class="as-result-distance">540 km</div>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <p class="mobile-sub" style="margin: 0;">Combobox con autocompletamento Mapbox. La voce evidenziata si seleziona con un tap.</p>
+      </div>
+
+      <!-- ============ VARIANT 2: Selected — radius + pill + toast ============ -->
+      <div class="mobile-stack">
+        <div class="stack-label"><strong>Stato B</strong>indirizzo selezionato</div>
+
+        <div class="mobile-frame">
+          <!-- Status bar -->
+          <div class="m-statusbar">
+            <span>9:41</span>
+            <div class="icons">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-8H2v8zm5 0h2V10H7v12zm5 0h2V6h-2v16zm5 0h2v-4h-2v4zm5 0h2V2h-2v20z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="18" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><rect x="4" y="9" width="13" height="6" rx="0.5" fill="currentColor"/></svg>
+            </div>
+          </div>
+
+          <!-- Map -->
+          <div class="m-map">
+            <svg class="streets" viewBox="0 0 420 880" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.55;">
+              <path class="major" d="M -20 380 C 100 360, 200 420, 320 380 S 460 360, 460 360" />
+              <path class="major" d="M 130 -20 L 180 900" />
+              <path class="major" d="M 280 -20 L 320 900" />
+              <path class="minor" d="M -20 600 L 460 600" />
+              <path class="minor" d="M -20 280 L 460 280" />
+              <path class="alley" d="M 200 200 L 240 480" />
+              <path class="alley" d="M 100 540 L 200 720" />
+              <text class="area-label" x="220" y="200">Centro</text>
+              <text class="area-label" x="60" y="800">Navigli</text>
+            </svg>
+
+            <!-- 1km radius circle -->
+            <div class="m-radius" style="left: 50%; top: 50%;">
+              <div class="radius-circle">
+                <div class="radius-label">RAGGIO <strong>1 km</strong></div>
+                <div class="radius-marker"></div>
+              </div>
+            </div>
+
+            <!-- Inside-radius pins -->
+            <div class="pin private selected" style="left: 47%; top: 44%;">
+              <div class="pin-bubble"><span class="pin-dot">€</span><span>3,50</span></div>
+            </div>
+            <div class="pin business" style="left: 58%; top: 48%;">
+              <div class="pin-bubble"><span class="pin-dot">€</span><span>2,00</span></div>
+            </div>
+            <div class="pin private" style="left: 43%; top: 58%;">
+              <div class="pin-bubble"><span class="pin-dot">€</span><span>4,00</span></div>
+            </div>
+
+            <!-- Outside, dimmed -->
+            <div class="pin business" style="left: 78%; top: 24%; opacity: 0.3; filter: grayscale(0.6);">
+              <div class="pin-bubble"><span class="pin-dot">€</span><span>1,80</span></div>
+            </div>
+          </div>
+
+          <!-- Search bar (collapsed) -->
+          <div class="m-search-bar">
+            <svg class="ms-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" value="Piazza Duomo, Milano" />
+            <button class="ms-locate" title="Usa la mia posizione">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            </button>
+          </div>
+
+          <!-- Address pill below search -->
+          <div class="m-address-pill">
+            <div class="ap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="ap-text">Piazza Duomo, Milano</div>
+            <div class="ap-radius">1 km</div>
+            <button class="ap-close" aria-label="Pulisci">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <!-- Locate FAB -->
+          <button class="m-fab" style="bottom: 240px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+          </button>
+
+          <!-- Bottom sheet — compact, one of 3 results -->
+          <div class="m-sheet compact">
+            <div class="grabber"></div>
+            <div class="m-sheet-content">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.14em; color: var(--ink-3);">3 bagni nel raggio</span>
+                <span class="badge-pill" style="background: var(--terracotta-soft); color: var(--terracotta-deep); border-color:transparent;">1 / 3</span>
+              </div>
+              <div class="m-sheet-row">
+                <div class="m-sheet-photo"></div>
+                <div class="m-sheet-info">
+                  <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:2px;">
+                    <span class="badge-pill badge-private" style="font-size:10px; padding:2px 7px;">🏠 Privato</span>
+                  </div>
+                  <div class="m-sheet-name">Bagno <em>Galleria</em></div>
+                  <div class="m-sheet-zone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/></svg>
+                    Centro · 240 m da Duomo
+                  </div>
+                  <div class="m-sheet-meta">
+                    <div class="price">3,50<span class="unit">€/h</span></div>
+                    <span class="rating">
+                      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      4,7
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="mobile-sub" style="margin: 0;">Cerchio del raggio 1 km, pillola dell'indirizzo dismissibile e listing filtrati nel bottom sheet.</p>
+      </div>
+
+    </div>
+
+    <!-- =============== Empty radius mobile preview =============== -->
+    <div style="margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+      <div class="stack-label"><strong>Stato C</strong>raggio vuoto</div>
+
+      <div class="mobile-frame">
+        <div class="m-statusbar">
+          <span>9:41</span>
+          <div class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-8H2v8zm5 0h2V10H7v12zm5 0h2V6h-2v16zm5 0h2v-4h-2v4zm5 0h2V2h-2v20z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="18" height="10" rx="2"/><rect x="4" y="9" width="13" height="6" rx="0.5" fill="currentColor"/></svg>
+          </div>
+        </div>
+
+        <div class="m-map">
+          <svg class="streets" viewBox="0 0 420 880" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.45;">
+            <path class="minor" d="M -20 480 L 460 480" />
+            <path class="minor" d="M 200 -20 L 220 900" />
+            <path class="alley" d="M 60 200 L 100 880" />
+            <text class="area-label" x="160" y="220">Sacrofano</text>
+          </svg>
+
+          <div class="m-radius" style="left: 50%; top: 50%;">
+            <div class="radius-circle" style="background: repeating-linear-gradient(45deg, oklch(0.62 0.13 45 / 0.06) 0 8px, transparent 8px 16px), radial-gradient(circle at center, oklch(0.62 0.13 45 / 0.05), oklch(0.62 0.13 45 / 0.10));">
+              <div class="radius-label">RAGGIO <strong>1 km</strong> · vuoto</div>
+              <div class="radius-marker"></div>
+            </div>
+          </div>
+
+          <div class="cluster sm" style="left: 14%; top: 78%; opacity: 0.3; filter: grayscale(0.6);">
+            <div class="cluster-bubble">3</div>
+          </div>
+          <div class="cluster" style="left: 84%; top: 22%; opacity: 0.3; filter: grayscale(0.6);">
+            <div class="cluster-bubble">5</div>
+          </div>
+        </div>
+
+        <div class="m-search-bar">
+          <svg class="ms-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" value="Via di Sacrofano 42, Sacrofano" />
+          <button class="ms-locate" title="Usa la mia posizione">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+          </button>
+        </div>
+
+        <div class="m-address-pill">
+          <div class="ap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="ap-text">Via di Sacrofano 42</div>
+          <div class="ap-radius">1 km</div>
+          <button class="ap-close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <!-- Mobile toast (anchored low, above the safe area) -->
+        <div class="m-toast">
+          <div class="toast toast-warn" style="width: auto;">
+            <div class="toast-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="12"/><line x1="11" y1="15" x2="11.01" y2="15"/></svg>
+            </div>
+            <div class="toast-body">
+              <h4 class="toast-title">Nessun risultato</h4>
+              <p class="toast-message">Nessun bagno nel raggio di 1 km da <em>Via di Sacrofano 42</em>.</p>
+              <div class="toast-actions">
+                <button class="primary">Allarga a 5 km</button>
+                <button>Cambia</button>
+              </div>
+            </div>
+            <button class="toast-close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="toast-progress"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="mobile-sub" style="margin: 0;">Toast in stile sonner: messaggio + scorciatoie per allargare il raggio o cambiare indirizzo.</p>
+    </div>
+
+  </div>
+</body>
+</html>

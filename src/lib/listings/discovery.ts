@@ -14,6 +14,9 @@ export const FALLBACK_MAP_CENTER = {
   zoom: 12,
 } as const;
 
+export const SEARCH_RADIUS_KM = 1;
+export const GEOCODE_AUTOCOMPLETE_LIMIT = 5;
+
 export type PublicHostType = "PRIVATE" | "BUSINESS";
 
 export type PublicMapListing = {

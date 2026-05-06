@@ -13,8 +13,10 @@ import type {
 } from "mapbox-gl";
 import {
   FALLBACK_MAP_CENTER,
+  SEARCH_RADIUS_KM,
   type PublicMapListing,
 } from "@/lib/listings/discovery";
+import { filterListingsByRadius } from "@/lib/geo/distance";
 import { ListingPreviewCard } from "./listing-preview-card";
 
 type GeoStatus = "pending" | "granted" | "denied" | "unsupported";
@@ -64,12 +66,24 @@ export type LoadStatus =
   | { kind: "ok"; count: number }
   | { kind: "error" };
 
+export type SearchFocus = {
+  latitude: number;
+  longitude: number;
+};
+
 type Props = {
   onGeoStatusChange?: (status: GeoStatus) => void;
   onLoadStatusChange?: (status: LoadStatus) => void;
+  searchFocus?: SearchFocus | null;
+  geolocateNonce?: number;
 };
 
-export function MapView({ onGeoStatusChange, onLoadStatusChange }: Props) {
+export function MapView({
+  onGeoStatusChange,
+  onLoadStatusChange,
+  searchFocus,
+  geolocateNonce,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapboxMap | null>(null);
   const markersRef = useRef<Map<string, MapboxMarker>>(new Map());
@@ -77,7 +91,13 @@ export function MapView({ onGeoStatusChange, onLoadStatusChange }: Props) {
   const popupRootRef = useRef<Root | null>(null);
   const meMarkerRef = useRef<MapboxMarker | null>(null);
   const listingsRef = useRef<Map<string, PublicMapListing>>(new Map());
+  const allListingsRef = useRef<PublicMapListing[]>([]);
   const selectedIdRef = useRef<string | null>(null);
+  const searchFocusRef = useRef<SearchFocus | null>(null);
+  const repaintRef = useRef<(() => void) | null>(null);
+  const geolocateRef = useRef<(() => void) | null>(null);
+  const onLoadStatusRef = useRef(onLoadStatusChange);
+  onLoadStatusRef.current = onLoadStatusChange;
 
   const [, setReady] = useState(false);
 
@@ -112,53 +132,41 @@ export function MapView({ onGeoStatusChange, onLoadStatusChange }: Props) {
         await loadAndPaintListings();
       });
 
-      // Geolocation flow
-      if (typeof navigator !== "undefined" && navigator.geolocation) {
-        onGeoStatusChange?.("pending");
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            if (cancelled) return;
-            onGeoStatusChange?.("granted");
-            const here: LngLatLike = [pos.coords.longitude, pos.coords.latitude];
-            map.flyTo({ center: here, zoom: 14, duration: 600 });
-            placeMeMarker(here);
-          },
-          () => {
-            if (cancelled) return;
-            onGeoStatusChange?.("denied");
-          },
-          { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 },
-        );
-      } else {
-        onGeoStatusChange?.("unsupported");
+      function runGeolocate() {
+        if (typeof navigator !== "undefined" && navigator.geolocation) {
+          onGeoStatusChange?.("pending");
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              if (cancelled) return;
+              onGeoStatusChange?.("granted");
+              const here: LngLatLike = [
+                pos.coords.longitude,
+                pos.coords.latitude,
+              ];
+              map.flyTo({ center: here, zoom: 14, duration: 600 });
+              placeMeMarker(here);
+            },
+            () => {
+              if (cancelled) return;
+              onGeoStatusChange?.("denied");
+            },
+            { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 },
+          );
+        } else {
+          onGeoStatusChange?.("unsupported");
+        }
       }
+      geolocateRef.current = runGeolocate;
+      runGeolocate();
     })();
 
-    async function loadAndPaintListings() {
+    function applyListings(listings: PublicMapListing[]) {
       const map = mapRef.current;
       const mapboxgl = mapboxglModule;
       if (!map || !mapboxgl) return;
 
-      onLoadStatusChange?.({ kind: "loading" });
-      let listings: PublicMapListing[] | null = null;
-      try {
-        const res = await fetch("/api/listings/map", { cache: "no-store" });
-        if (res.ok) {
-          const data = (await res.json()) as { listings: PublicMapListing[] };
-          listings = data.listings;
-        }
-      } catch {
-        // Fall through to error path below.
-      }
-      if (cancelled) return;
-
-      if (listings === null) {
-        onLoadStatusChange?.({ kind: "error" });
-        return;
-      }
-
       listingsRef.current = new Map(listings.map((l) => [l.id, l]));
-      onLoadStatusChange?.({ kind: "ok", count: listings.length });
+      onLoadStatusRef.current?.({ kind: "ok", count: listings.length });
 
       const featureCollection: GeoJSON.FeatureCollection<GeoJSON.Point> = {
         type: "FeatureCollection",
@@ -172,42 +180,73 @@ export function MapView({ onGeoStatusChange, onLoadStatusChange }: Props) {
 
       if (map.getSource(SOURCE_ID)) {
         (map.getSource(SOURCE_ID) as GeoJSONSource).setData(featureCollection);
-      } else {
-        map.addSource(SOURCE_ID, {
-          type: "geojson",
-          data: featureCollection,
-          cluster: true,
-          clusterRadius: 50,
-          clusterMaxZoom: 14,
-        });
-        // Invisible layers — we render HTML markers, but keep the layers so
-        // queryRenderedFeatures sees them.
-        map.addLayer({
-          id: CLUSTER_LAYER,
-          type: "circle",
-          source: SOURCE_ID,
-          filter: ["has", "point_count"],
-          paint: { "circle-opacity": 0, "circle-radius": 1 },
-        });
-        map.addLayer({
-          id: POINT_LAYER,
-          type: "circle",
-          source: SOURCE_ID,
-          filter: ["!", ["has", "point_count"]],
-          paint: { "circle-opacity": 0, "circle-radius": 1 },
-        });
-
-        // Register sync handlers only after the source/layers exist, so we
-        // never query layers Mapbox hasn't indexed yet. `sourcedata` (with the
-        // isSourceLoaded filter) and `moveend` together cover cluster updates
-        // and pan/zoom without the per-frame cost of `render`.
-        map.on("sourcedata", (e) => {
-          if (e.sourceId === SOURCE_ID && e.isSourceLoaded) syncMarkers();
-        });
-        map.on("moveend", syncMarkers);
+        syncMarkers();
+        return;
       }
 
+      map.addSource(SOURCE_ID, {
+        type: "geojson",
+        data: featureCollection,
+        cluster: true,
+        clusterRadius: 50,
+        clusterMaxZoom: 14,
+      });
+      map.addLayer({
+        id: CLUSTER_LAYER,
+        type: "circle",
+        source: SOURCE_ID,
+        filter: ["has", "point_count"],
+        paint: { "circle-opacity": 0, "circle-radius": 1 },
+      });
+      map.addLayer({
+        id: POINT_LAYER,
+        type: "circle",
+        source: SOURCE_ID,
+        filter: ["!", ["has", "point_count"]],
+        paint: { "circle-opacity": 0, "circle-radius": 1 },
+      });
+      map.on("sourcedata", (e) => {
+        if (e.sourceId === SOURCE_ID && e.isSourceLoaded) syncMarkers();
+      });
+      map.on("moveend", syncMarkers);
       syncMarkers();
+    }
+
+    function repaintWithCurrentFocus() {
+      const focus = searchFocusRef.current;
+      const all = allListingsRef.current;
+      const visible = focus
+        ? filterListingsByRadius(all, focus, SEARCH_RADIUS_KM)
+        : all;
+      applyListings(visible);
+    }
+    repaintRef.current = repaintWithCurrentFocus;
+
+    async function loadAndPaintListings() {
+      const map = mapRef.current;
+      const mapboxgl = mapboxglModule;
+      if (!map || !mapboxgl) return;
+
+      onLoadStatusRef.current?.({ kind: "loading" });
+      let listings: PublicMapListing[] | null = null;
+      try {
+        const res = await fetch("/api/listings/map", { cache: "no-store" });
+        if (res.ok) {
+          const data = (await res.json()) as { listings: PublicMapListing[] };
+          listings = data.listings;
+        }
+      } catch {
+        // Fall through to error path below.
+      }
+      if (cancelled) return;
+
+      if (listings === null) {
+        onLoadStatusRef.current?.({ kind: "error" });
+        return;
+      }
+
+      allListingsRef.current = listings;
+      repaintWithCurrentFocus();
       setReady(true);
     }
 
@@ -337,6 +376,7 @@ export function MapView({ onGeoStatusChange, onLoadStatusChange }: Props) {
       });
     }
 
+    // expose helpers via refs so the focus/geolocate effects below can call them
     return () => {
       cancelled = true;
       for (const marker of markersRef.current.values()) marker.remove();
@@ -353,6 +393,26 @@ export function MapView({ onGeoStatusChange, onLoadStatusChange }: Props) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Apply / clear search focus: refilter listings, flyTo the selection.
+  useEffect(() => {
+    searchFocusRef.current = searchFocus ?? null;
+    repaintRef.current?.();
+    const map = mapRef.current;
+    if (map && searchFocus) {
+      map.flyTo({
+        center: [searchFocus.longitude, searchFocus.latitude],
+        zoom: 14,
+        duration: 600,
+      });
+    }
+  }, [searchFocus]);
+
+  // Re-trigger geolocation when the parent bumps the nonce.
+  useEffect(() => {
+    if (geolocateNonce === undefined) return;
+    geolocateRef.current?.();
+  }, [geolocateNonce]);
 
   return (
     <div

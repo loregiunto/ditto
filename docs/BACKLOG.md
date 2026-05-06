@@ -162,7 +162,7 @@ Dopo questa storia, un utente può aprire la home page e vedere una mappa Mapbox
 
 #### US-006: Ricerca per indirizzo
 
-**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3 | **Status:** PLANNED
+**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3 | **Status:** REVIEW
 
 **Story**
 Come Marco,
@@ -203,7 +203,7 @@ Dopo questa storia, un utente può aprire un pannello filtri, applicare criteri,
 
 #### US-008: Pagina di dettaglio listing
 
-**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3
+**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3 | **Status:** PLANNED
 
 **Story**
 Come Marco,

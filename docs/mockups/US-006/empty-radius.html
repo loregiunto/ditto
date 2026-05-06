@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1440" />
+  <title>HomeRest — Nessun bagno nel raggio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .streets path { stroke: #DCD0B8; fill: none; }
+    .streets .major { stroke: #CFC0A4; stroke-width: 6; }
+    .streets .minor { stroke: #DCD0B8; stroke-width: 3; }
+    .streets .alley { stroke: #E5DBC4; stroke-width: 1.5; }
+    .streets .label {
+      font-family: var(--font-display); font-size: 13px;
+      font-style: italic;
+      fill: oklch(0.55 0.04 60);
+      letter-spacing: 0.02em;
+    }
+    .streets .area-label {
+      font-family: var(--font-sans); font-size: 11px;
+      font-weight: 600;
+      fill: oklch(0.45 0.05 60);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    /* All pins outside the radius — dimmed to convey emptiness */
+    .pin.outside .pin-bubble { opacity: 0.32; filter: grayscale(0.6); }
+    .cluster.outside .cluster-bubble { opacity: 0.3; filter: grayscale(0.6); }
+    .cluster.outside .cluster-bubble::before { display: none; }
+
+    /* Subtle empty-state hatch INSIDE the radius circle */
+    .radius-overlay.empty .radius-circle {
+      background:
+        repeating-linear-gradient(
+          45deg,
+          oklch(0.62 0.13 45 / 0.06) 0 8px,
+          transparent 8px 16px),
+        radial-gradient(circle at center,
+          oklch(0.62 0.13 45 / 0.05) 0%,
+          oklch(0.62 0.13 45 / 0.10) 100%);
+      border-color: oklch(0.62 0.13 45 / 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="map-shell">
+    <!-- ============== MAP CANVAS ============== -->
+    <div class="map-canvas">
+      <div class="map-tiles"></div>
+
+      <svg class="streets map-streets" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <path class="major" d="M -50 220 C 200 240, 380 180, 600 230 S 980 320, 1200 240 S 1500 200, 1500 200" />
+        <path class="major" d="M -50 620 C 220 580, 460 660, 720 600 S 1100 520, 1500 600" />
+        <path class="major" d="M 280 -20 C 320 220, 280 460, 360 720 S 380 950, 380 950" />
+        <path class="major" d="M 940 -20 C 920 240, 1000 480, 980 720 S 980 950, 980 950" />
+        <path class="minor" d="M 150 50 L 250 880" />
+        <path class="minor" d="M 530 30 L 580 880" />
+        <path class="minor" d="M 760 0 L 800 900" />
+        <path class="minor" d="M 1180 50 L 1230 880" />
+        <path class="minor" d="M -20 380 L 1480 380" />
+        <path class="minor" d="M -20 800 L 1480 800" />
+        <path class="minor" d="M 60 100 L 1380 100" />
+        <path class="alley" d="M 350 140 L 380 380" />
+        <path class="alley" d="M 700 380 L 760 620" />
+        <path class="alley" d="M 1080 460 L 1180 760" />
+        <path class="alley" d="M 200 460 L 380 700" />
+
+        <text class="area-label" x="180" y="200">Olgiata</text>
+        <text class="area-label" x="660" y="180">La Storta</text>
+        <text class="area-label" x="1080" y="200">Cesano</text>
+        <text class="area-label" x="280" y="780">Isola Farnese</text>
+        <text class="area-label" x="780" y="820">Formello</text>
+        <text class="area-label" x="1180" y="780">Sacrofano</text>
+
+        <text class="label" x="640" y="220">Via Cassia</text>
+      </svg>
+
+      <div class="map-grain"></div>
+
+      <!-- 1 km radius circle, empty hatched state -->
+      <div class="radius-overlay empty" style="left: 50%; top: 50%; width: 380px; height: 380px;">
+        <div class="radius-circle">
+          <div class="radius-label">RAGGIO <strong>1 km</strong> · vuoto</div>
+          <div class="radius-center">
+            <div class="radius-marker"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- A few far-away pins all OUTSIDE the radius -->
+      <div class="pin private outside" style="left: 18%; top: 24%;">
+        <div class="pin-bubble"><span class="pin-dot">€</span><span>3,00/h</span></div>
+      </div>
+      <div class="pin business outside" style="left: 84%; top: 28%;">
+        <div class="pin-bubble"><span class="pin-dot">€</span><span>2,50/h</span></div>
+      </div>
+      <div class="cluster sm outside" style="left: 14%; top: 78%;">
+        <div class="cluster-bubble">3</div>
+      </div>
+      <div class="cluster outside" style="left: 86%; top: 76%;">
+        <div class="cluster-bubble">5</div>
+      </div>
+    </div>
+
+    <!-- ============== TOPBAR ============== -->
+    <header class="topbar with-search">
+      <a class="brand" href="#">
+        <div class="brand-mark">h</div>
+        <div class="brand-name">Home<em>Rest</em></div>
+      </a>
+
+      <div class="address-search">
+        <div class="as-input">
+          <svg class="as-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" value="Via di Sacrofano 42, Sacrofano" aria-label="Cerca per indirizzo" />
+          <button class="as-clear" aria-label="Pulisci">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <button class="as-locate" title="Usa la mia posizione">
+            <span class="locate-dot"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            <span>Usa la mia posizione</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <a class="btn btn-ghost" href="#">Diventa host</a>
+        <a class="btn" href="#">Accedi</a>
+        <a class="btn btn-primary" href="#">Registrati</a>
+      </div>
+    </header>
+
+    <!-- Address pill (selected) -->
+    <div class="address-pill">
+      <div class="ap-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div class="ap-text">Via di Sacrofano 42, Sacrofano</div>
+      <div class="ap-radius">RAGGIO 1 km</div>
+      <button class="ap-close" aria-label="Pulisci ricerca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- ============== TOAST: Empty radius ============== -->
+    <div class="toast-container">
+      <div class="toast toast-warn" role="status" aria-live="polite">
+        <div class="toast-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="12"/><line x1="11" y1="15" x2="11.01" y2="15"/></svg>
+        </div>
+        <div class="toast-body">
+          <h4 class="toast-title">Nessun risultato nel raggio</h4>
+          <p class="toast-message">
+            Nessun bagno nel raggio di 1 km da <em>Via di Sacrofano 42, Sacrofano</em>. Prova ad allargare l'area di ricerca o a cercare un altro indirizzo.
+          </p>
+          <div class="toast-actions">
+            <button class="primary">Allarga a 5 km</button>
+            <button>Cambia indirizzo</button>
+          </div>
+        </div>
+        <button class="toast-close" aria-label="Chiudi">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="toast-progress"></div>
+      </div>
+    </div>
+
+    <!-- ============== MAP CONTROLS ============== -->
+    <div class="map-controls">
+      <div class="map-btn-group">
+        <button class="map-btn" title="Zoom in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="map-btn" title="Zoom out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+      <button class="map-btn" title="La mia posizione">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+      </button>
+    </div>
+
+    <div class="scale-bar">
+      <div class="bar"></div>
+      <span>500 m</span>
+    </div>
+  </div>
+</body>
+</html>

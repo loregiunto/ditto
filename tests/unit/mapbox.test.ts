@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { __testing, geocodeAddress, GeocodingError } from "@/lib/mapbox";
+import {
+  __testing,
+  geocodeAddress,
+  searchAddresses,
+  GeocodingError,
+} from "@/lib/mapbox";
 
 const { deriveDisplay } = __testing;
 
@@ -123,5 +128,88 @@ describe("geocodeAddress", () => {
       latitude: 43.77,
       longitude: 11.25,
     });
+  });
+});
+
+describe("searchAddresses", () => {
+  const originalFetch = global.fetch;
+  beforeEach(() => {
+    process.env.MAPBOX_ACCESS_TOKEN = "test-token";
+  });
+  afterEach(() => {
+    global.fetch = originalFetch;
+    vi.restoreAllMocks();
+  });
+
+  it("returns [] for empty query without hitting fetch", async () => {
+    const fetchMock = vi.fn();
+    global.fetch = fetchMock as unknown as typeof fetch;
+    expect(await searchAddresses("   ")).toEqual([]);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("calls Mapbox with autocomplete=true and country=IT", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ features: [] }),
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+    await searchAddresses("Via", { limit: 5 });
+    const calledUrl = fetchMock.mock.calls[0][0] as string;
+    expect(calledUrl).toContain("autocomplete=true");
+    expect(calledUrl).toContain("country=IT");
+    expect(calledUrl).toContain("limit=5");
+  });
+
+  it("normalizes features into suggestions", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        features: [
+          {
+            id: "address.123",
+            place_name: "Via del Corso 100, 00186 Roma RM, Italia",
+            center: [12.481, 41.901],
+            text: "Via del Corso 100",
+            context: [
+              { id: "neighborhood.1", text: "Centro Storico" },
+              { id: "place.1", text: "Roma" },
+            ],
+          },
+        ],
+      }),
+    }) as unknown as typeof fetch;
+
+    const out = await searchAddresses("Via del Corso");
+    expect(out).toEqual([
+      {
+        id: "address.123",
+        label: "Via del Corso 100, 00186 Roma RM, Italia",
+        addressDisplay: "Centro Storico, Roma",
+        latitude: 41.901,
+        longitude: 12.481,
+      },
+    ]);
+  });
+
+  it("returns [] when Mapbox returns no features", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    }) as unknown as typeof fetch;
+    expect(await searchAddresses("xyz")).toEqual([]);
+  });
+
+  it("throws GeocodingError on HTTP error", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+    }) as unknown as typeof fetch;
+    await expect(searchAddresses("Via")).rejects.toBeInstanceOf(GeocodingError);
+  });
+
+  it("throws when token missing", async () => {
+    delete process.env.MAPBOX_ACCESS_TOKEN;
+    await expect(searchAddresses("Via")).rejects.toBeInstanceOf(GeocodingError);
   });
 });

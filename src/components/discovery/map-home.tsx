@@ -2,7 +2,9 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { AddressSearchBar, type AddressSelection } from "./address-search-bar";
 
 const MapView = dynamic(
   () => import("./map-view").then((m) => m.MapView),
@@ -24,11 +26,32 @@ export function MapHome({ authedUserName }: Props) {
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [loadStatus, setLoadStatus] = useState<LoadStatus>({ kind: "loading" });
   const [retryNonce, setRetryNonce] = useState(0);
+  const [search, setSearch] = useState<AddressSelection | null>(null);
+  const [geolocateNonce, setGeolocateNonce] = useState(0);
+  const lastEmptyToastKeyRef = useRef<string | null>(null);
+
+  // Empty-radius toast: fire once per (searchId, count==0) transition.
+  useEffect(() => {
+    if (!search) {
+      lastEmptyToastKeyRef.current = null;
+      return;
+    }
+    if (loadStatus.kind === "ok" && loadStatus.count === 0) {
+      const key = search.id;
+      if (lastEmptyToastKeyRef.current !== key) {
+        lastEmptyToastKeyRef.current = key;
+        toast(
+          `Nessun bagno nel raggio di 1 km da ${search.addressDisplay || search.label}`,
+        );
+      }
+    }
+  }, [search, loadStatus]);
 
   const showGeoBanner =
     !bannerDismissed && (geoStatus === "denied" || geoStatus === "unsupported");
   const showLoadError = loadStatus.kind === "error";
-  const showEmptyState = loadStatus.kind === "ok" && loadStatus.count === 0;
+  const showEmptyState =
+    !search && loadStatus.kind === "ok" && loadStatus.count === 0;
 
   return (
     <div className="hr-map-shell">
@@ -36,6 +59,8 @@ export function MapHome({ authedUserName }: Props) {
         key={retryNonce}
         onGeoStatusChange={setGeoStatus}
         onLoadStatusChange={setLoadStatus}
+        searchFocus={search}
+        geolocateNonce={geolocateNonce}
       />
 
       <header className="hr-topbar">
@@ -45,6 +70,14 @@ export function MapHome({ authedUserName }: Props) {
             Home<em>Rest</em>
           </div>
         </Link>
+        <AddressSearchBar
+          onPlaceSelected={(s) => setSearch(s)}
+          onUseMyLocation={() => {
+            setSearch(null);
+            setGeolocateNonce((n) => n + 1);
+          }}
+          onClear={() => setSearch(null)}
+        />
         <div className="hr-topbar-actions">
           {authedUserName ? (
             <>
@@ -75,6 +108,37 @@ export function MapHome({ authedUserName }: Props) {
           )}
         </div>
       </header>
+
+      {search && (
+        <div
+          className="hr-search-pill"
+          role="status"
+          data-testid="search-pill"
+        >
+          <span className="hr-search-pill-label">
+            {search.addressDisplay || search.label}
+          </span>
+          <span className="hr-search-pill-radius">· raggio 1 km</span>
+          <button
+            type="button"
+            className="hr-search-pill-close"
+            aria-label="Rimuovi filtro indirizzo"
+            onClick={() => setSearch(null)}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {showGeoBanner && (
         <div className="hr-banner warn" role="status" data-testid="geo-banner">

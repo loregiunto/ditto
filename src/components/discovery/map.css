@@ -581,3 +581,308 @@
 .hr-map-shell .mapboxgl-popup-close-button {
   display: none;
 }
+
+/* =================================================================
+   ADDRESS SEARCH COMBOBOX (US-006) — ported from docs/mockups/US-006/
+   ================================================================= */
+
+.hr-map-shell .hr-address-search {
+  position: relative;
+  flex: 1;
+  max-width: 520px;
+  margin-left: 8px;
+}
+
+.hr-address-search .hr-as-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 8px 9px 16px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  font-size: 14px;
+  color: var(--ink);
+  height: 42px;
+  transition: border-color 140ms, box-shadow 140ms, background 140ms;
+}
+.hr-address-search .hr-as-input:focus-within,
+.hr-address-search.open .hr-as-input {
+  background: var(--bg-elev);
+  border-color: var(--ink);
+  box-shadow:
+    0 0 0 4px oklch(0.62 0.13 45 / 0.12),
+    var(--shadow-sm);
+}
+
+.hr-address-search .hr-as-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+.hr-address-search.open .hr-as-icon {
+  color: var(--terracotta);
+}
+
+.hr-address-search input[type="text"] {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: 0;
+  font-size: 14px;
+  color: var(--ink);
+  font-family: inherit;
+  min-width: 0;
+}
+.hr-address-search input[type="text"]::placeholder {
+  color: var(--ink-3);
+}
+
+.hr-as-locate {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 140ms;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+.hr-as-locate svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.hr-as-locate:hover {
+  background: var(--terracotta-soft);
+  border-color: var(--terracotta-soft);
+  color: var(--terracotta-deep);
+}
+.hr-as-locate .hr-locate-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: oklch(0.55 0.18 250);
+  margin-right: 2px;
+  box-shadow: 0 0 0 2px oklch(0.55 0.18 250 / 0.18);
+}
+
+.hr-as-clear {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  background: var(--bg-sunk);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 120ms;
+}
+.hr-as-clear:hover {
+  background: var(--line-strong);
+  color: var(--ink);
+}
+.hr-as-clear svg {
+  width: 12px;
+  height: 12px;
+}
+
+.hr-as-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: 60;
+}
+
+.hr-as-dd-header {
+  padding: 12px 18px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+.hr-as-dd-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+}
+.hr-as-dd-attribution {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+.hr-as-dd-attribution strong {
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.hr-as-results {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.hr-as-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: background 120ms;
+  border-left: 2px solid transparent;
+}
+.hr-as-result:hover,
+.hr-as-result.active {
+  background: var(--bg-sunk);
+  border-left-color: var(--terracotta);
+}
+.hr-as-result-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--bg-warm);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+.hr-as-result-icon svg {
+  width: 15px;
+  height: 15px;
+}
+.hr-as-result.active .hr-as-result-icon,
+.hr-as-result:hover .hr-as-result-icon {
+  background: var(--terracotta-soft);
+  color: var(--terracotta-deep);
+}
+.hr-as-result-body {
+  flex: 1;
+  min-width: 0;
+}
+.hr-as-result-primary {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 1px;
+  letter-spacing: -0.005em;
+}
+.hr-as-result-primary mark {
+  background: var(--amber-soft);
+  color: oklch(0.42 0.10 70);
+  padding: 0 2px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.hr-as-result-secondary {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.hr-as-dd-footer {
+  border-top: 1px solid var(--line);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, transparent, var(--bg-sunk));
+}
+.hr-as-dd-footer .hr-hints {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.hr-as-dd-footer .hr-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.hr-as-dd-footer .hr-kbd {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-2);
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 5px;
+  line-height: 1.4;
+}
+
+.hr-as-empty {
+  padding: 24px 18px;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+/* Selected location pill chip above the map */
+.hr-search-pill {
+  position: absolute;
+  top: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+  color: var(--ink);
+  max-width: 80%;
+}
+.hr-search-pill-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hr-search-pill-radius {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.hr-search-pill-close {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: var(--bg-sunk);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background 120ms;
+}
+.hr-search-pill-close:hover {
+  background: var(--line-strong);
+  color: var(--ink);
+}
+.hr-search-pill-close svg {
+  width: 12px;
+  height: 12px;
+}
