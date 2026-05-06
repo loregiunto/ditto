@@ -71,7 +71,7 @@ Dopo questa storia, un host può compilare e salvare un listing completo in stat
 
 #### US-002: Pubblicazione e disattivazione listing
 
-**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 2
+**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 2 | **Status:** REVIEW
 
 **Story**
 Come Giulia,

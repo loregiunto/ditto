@@ -45,6 +45,8 @@ const mockUser = {
   email: "host@example.com",
   name: null,
   image: null,
+  stripeAccountId: null,
+  identityStatus: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
