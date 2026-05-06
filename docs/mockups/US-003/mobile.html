@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HomeRest — Disponibilità · Mobile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    /* page background to showcase the mobile frame */
+    body {
+      background:
+        radial-gradient(circle at 20% 0%, var(--terracotta-soft), transparent 40%),
+        radial-gradient(circle at 80% 100%, var(--amber-soft), transparent 50%),
+        var(--bg);
+      min-height: 100vh;
+      padding: 0;
+    }
+    .device-label {
+      max-width: 420px;
+      margin: 18px auto -6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      text-align: center;
+    }
+    .nav-back {
+      max-width: 420px;
+      margin: 18px auto 0;
+      text-align: center;
+    }
+    .nav-back a {
+      font-size: 12px; color: var(--ink-3);
+      text-decoration: none;
+    }
+    .nav-back a:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="device-label">Mobile · 390 × 844</div>
+  <div class="mobile-frame">
+    <div class="mob-topbar">
+      <button class="mob-back" aria-label="Indietro">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="mob-title">Disponibilità <em>· settimana</em></div>
+      <button class="mob-back" aria-label="Cronologia">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
+      </button>
+    </div>
+
+    <div class="mob-content">
+      <!-- Listing context strip -->
+      <div class="mob-listing-strip">
+        <div class="mob-listing-thumb"></div>
+        <div style="flex: 1; min-width: 0;">
+          <div class="mob-listing-name">Bagno del Cortile</div>
+          <div class="mob-listing-meta">Trastevere · €4 / 30 min · ricorrente</div>
+        </div>
+        <span class="badge-pill badge-private" style="flex-shrink: 0;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg>
+          Privato
+        </span>
+      </div>
+
+      <!-- Quick presets -->
+      <div class="mob-presets">
+        <button class="preset-chip" style="flex-shrink: 0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2"/></svg>
+          Lavoro 9–18
+        </button>
+        <button class="preset-chip" style="flex-shrink: 0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          Sera 18–22
+        </button>
+        <button class="preset-chip" style="flex-shrink: 0;">
+          Weekend
+        </button>
+      </div>
+
+      <!-- Day accordions -->
+      <div class="mob-day open">
+        <div class="mob-day-head">
+          <div>
+            <div class="dow">Lunedì <em>5 mag</em></div>
+            <div class="summary on">9:00–13:00 · 15:00–19:00</div>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="mob-day-body">
+          <div class="mob-strip">
+            <div class="mob-strip-time">09:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">9:00</div>
+              <div class="mob-cell on">9:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">10:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">10:00</div>
+              <div class="mob-cell on">10:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">11:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">11:00</div>
+              <div class="mob-cell on">11:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">12:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">12:00</div>
+              <div class="mob-cell on">12:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">13:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell">13:00</div>
+              <div class="mob-cell">13:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">14:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell">14:00</div>
+              <div class="mob-cell">14:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">15:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">15:00</div>
+              <div class="mob-cell on">15:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">16:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">16:00</div>
+              <div class="mob-cell on">16:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">17:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">17:00</div>
+              <div class="mob-cell on">17:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">18:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">18:00</div>
+              <div class="mob-cell on">18:30</div>
+            </div>
+          </div>
+          <div class="hint" style="margin-top: 12px; font-size: 12px;">… scorri per vedere tutte le fasce fino a 24:00</div>
+
+          <div class="mob-day-actions">
+            <button class="btn btn-sm">Copia da Mar</button>
+            <button class="btn btn-sm">Svuota giorno</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mob-day">
+        <div class="mob-day-head">
+          <div>
+            <div class="dow">Martedì <em>6 mag</em></div>
+            <div class="summary on">9:00–13:00 · 15:00–19:00</div>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <div class="mob-day has-booking open">
+        <div class="mob-day-head">
+          <div>
+            <div class="dow">Mercoledì <em>7 mag</em></div>
+            <div class="summary">9:00–13:00 · 15:00–19:00 · 1 prenotato</div>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="mob-day-body">
+          <div style="background: var(--terracotta-soft); border: 1px solid var(--terracotta); border-radius: var(--r-md); padding: 10px 12px; margin-bottom: 14px; display: flex; gap: 10px; align-items: flex-start;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--terracotta-deep); flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            <div style="font-size: 12px; color: var(--terracotta-deep); line-height: 1.45;">
+              <strong>Marco F.</strong> ha prenotato <strong>16:00–17:00</strong>. Lo slot è bloccato finché la prenotazione non viene cancellata.
+            </div>
+          </div>
+
+          <div class="mob-strip">
+            <div class="mob-strip-time">15:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">15:00</div>
+              <div class="mob-cell on">15:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">16:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell booked">Pren.</div>
+              <div class="mob-cell booked">Pren.</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">17:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">17:00</div>
+              <div class="mob-cell on">17:30</div>
+            </div>
+          </div>
+          <div class="mob-strip" style="margin-top: 6px;">
+            <div class="mob-strip-time">18:00</div>
+            <div class="mob-strip-cells">
+              <div class="mob-cell on">18:00</div>
+              <div class="mob-cell on">18:30</div>
+            </div>
+          </div>
+
+          <div class="mob-day-actions">
+            <button class="btn btn-sm">Copia da Lun</button>
+            <button class="btn btn-sm">Svuota giorno</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mob-day">
+        <div class="mob-day-head">
+          <div>
+            <div class="dow">Giovedì <em>8 mag</em></div>
+            <div class="summary on">9:00–13:00 · 15:00–19:00</div>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <div class="mob-day">
+        <div class="mob-day-head">
+          <div>
+            <div class="dow">Venerdì <em>9 mag</em></div>
+            <div class="summary on">9:00–13:00 · 15:00–19:00</div>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <div class="mob-day has-booking">
+        <div class="mob-day-head">
+          <div>
+            <div class="dow">Sabato <em>10 mag</em></div>
+            <div class="summary">10:00–20:00 · 1 prenotato</div>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <div class="mob-day">
+        <div class="mob-day-head">
+          <div>
+            <div class="dow">Domenica <em>11 mag</em></div>
+            <div class="summary on">11:00–14:00</div>
+          </div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <!-- Recap card -->
+      <div class="summary-card" style="margin-top: 18px;">
+        <h3 class="summary-title">Riepilogo <em>settimana</em></h3>
+        <div class="summary-row">
+          <span>Ore aperte</span>
+          <span class="num">38,5</span>
+        </div>
+        <div class="summary-bar" aria-hidden="true">
+          <span class="fill-active" style="width: 70%"></span>
+          <span class="fill-booked" style="width: 6%"></span>
+        </div>
+        <div class="divider"></div>
+        <div class="summary-row"><span>Slot da 30 min</span><strong>77</strong></div>
+        <div class="summary-row"><span>Prenotazioni in vigore</span><strong>2</strong></div>
+      </div>
+    </div>
+
+    <!-- Sticky save bar -->
+    <div class="mob-savebar">
+      <button class="btn">Annulla</button>
+      <button class="btn btn-primary" id="mobSave">
+        Salva · 3 modifiche
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-back">
+    <a href="index.html">← Torna alla vista desktop</a>
+  </div>
+
+  <div class="toast" id="toast" style="display: none;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    <span>Disponibilità aggiornata</span>
+  </div>
+
+  <script>
+    // Toggle accordion
+    document.querySelectorAll('.mob-day-head').forEach(h => {
+      h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+    });
+    // Toggle a cell on tap
+    document.querySelectorAll('.mob-cell').forEach(c => {
+      c.addEventListener('click', e => {
+        if (c.classList.contains('booked')) return;
+        c.classList.toggle('on');
+        e.stopPropagation();
+      });
+    });
+    // Save toast
+    document.getElementById('mobSave').addEventListener('click', () => {
+      const t = document.getElementById('toast');
+      t.style.display = 'flex';
+      setTimeout(() => t.style.display = 'none', 2200);
+    });
+  </script>
+</body>
+</html>

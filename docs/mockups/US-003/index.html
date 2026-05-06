@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>HomeRest — Disponibilità · Bagno del Cortile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">h</div>
+        <div class="brand-name">Home<em>Rest</em></div>
+      </div>
+
+      <div class="nav-section">Host</div>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+        I miei bagni
+        <span style="margin-left:auto; background: var(--bg-sunk); color: var(--ink-3); font-size: 11px; padding: 1px 7px; border-radius: 999px;">2</span>
+      </a>
+      <a class="nav-item active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+        Disponibilità
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Messaggi
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M5 9h14M5 15h14"/></svg>
+        Guadagni
+      </a>
+
+      <div class="nav-section">Generale</div>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Impostazioni
+      </a>
+
+      <div class="sidebar-foot">
+        <div class="avatar">GR</div>
+        <div class="who">
+          Giulia Rossi
+          <small>Super Host · Trastevere</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main canvas -->
+    <main class="canvas">
+      <header class="topbar">
+        <nav class="crumbs">
+          <a href="#">Dashboard</a>
+          <span class="sep">/</span>
+          <a href="#">I miei bagni</a>
+          <span class="sep">/</span>
+          <a href="#">Bagno del Cortile</a>
+          <span class="sep">/</span>
+          <span class="here">Disponibilità</span>
+        </nav>
+        <div class="topbar-actions">
+          <button class="btn btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
+            Cronologia modifiche
+          </button>
+        </div>
+      </header>
+
+      <section class="availability-page">
+        <div class="availability-wrap">
+
+          <!-- Page header -->
+          <div class="page-head">
+            <div>
+              <div class="hint" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;">Calendario ricorrente settimanale</div>
+              <h1 class="section-title">Quando ti trovano <em>aperta</em>?</h1>
+              <div class="listing-meta-row">
+                <span class="badge-pill badge-private">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg>
+                  Bagno del Cortile
+                </span>
+                <span class="hint">Trastevere, Roma · €4 / 30 min</span>
+                <span class="badge-pill badge-verified">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  Pubblicato
+                </span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn">Annulla</button>
+              <button class="btn btn-primary" id="saveBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+                Salva modifiche
+              </button>
+            </div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="toolbar">
+            <div class="toolbar-group">
+              <span class="toolbar-label">Preset rapidi</span>
+              <button class="preset-chip" data-preset="work">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2"/></svg>
+                Orario lavorativo · Lun–Ven 9–18
+              </button>
+              <button class="preset-chip" data-preset="evening">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                Sera 18–22
+              </button>
+              <button class="preset-chip" data-preset="weekend">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                Weekend 10–20
+              </button>
+              <button class="btn btn-ghost btn-sm" id="clearBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                Svuota
+              </button>
+            </div>
+            <div class="legend">
+              <span class="legend-item"><span class="legend-swatch empty"></span> Chiuso</span>
+              <span class="legend-item"><span class="legend-swatch available"></span> Aperto</span>
+              <span class="legend-item"><span class="legend-swatch booked"></span> Prenotato (bloccato)</span>
+            </div>
+          </div>
+
+          <!-- Two-column: grid + side panel -->
+          <div class="side-grid">
+            <div class="grid-card">
+              <div class="weekgrid" id="grid"></div>
+            </div>
+
+            <aside class="side-panel">
+              <div class="summary-card">
+                <h3 class="summary-title">Riepilogo <em>settimanale</em></h3>
+                <div class="summary-row">
+                  <span>Ore aperte</span>
+                  <span class="num" id="hoursOpen">38,5</span>
+                </div>
+                <div class="summary-bar" aria-hidden="true">
+                  <span class="fill-active" id="barActive" style="width: 70%"></span>
+                  <span class="fill-booked" id="barBooked" style="width: 6%"></span>
+                </div>
+                <div class="hint" style="margin-top: 8px; font-size: 12px;">
+                  <span style="color: var(--sage); font-weight: 600;">●</span> aperto ·
+                  <span style="color: var(--terracotta); font-weight: 600;">●</span> già prenotato
+                </div>
+                <div class="divider"></div>
+                <div class="summary-row">
+                  <span>Slot da 30 min</span>
+                  <strong id="slotsCount">77</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Prenotazioni in vigore</span>
+                  <strong>1</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Giorno più aperto</span>
+                  <strong>Sabato</strong>
+                </div>
+              </div>
+
+              <div class="tip-card">
+                <span class="tip-emoji">☕</span>
+                <h4 class="tip-title">Suggerimento</h4>
+                <p class="tip-body">Le ospiti cercano pause veloci dalle <strong>10:30 alle 12:00</strong> e tra le <strong>17:00 e le 19:00</strong>. Mantenere queste fasce aperte alza la probabilità di prenotazione del 30%.</p>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Floating save bar -->
+          <div class="save-bar">
+            <span class="changes">
+              <span class="pulse" aria-hidden="true"></span>
+              <span id="changeCount">3 modifiche non salvate</span>
+            </span>
+            <div class="row">
+              <button class="btn btn-sm">Annulla</button>
+              <button class="btn btn-primary btn-sm" id="saveBtn2">Salva modifiche</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" style="display: none;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    <span>Disponibilità aggiornata</span>
+  </div>
+
+  <script>
+    // Build the grid: 7 days × 30-min slots from 06:00 to 24:00 → 36 rows
+    const DAYS = [
+      { key: 'mon', short: 'Lun', long: 'Lunedì' },
+      { key: 'tue', short: 'Mar', long: 'Martedì' },
+      { key: 'wed', short: 'Mer', long: 'Mercoledì' },
+      { key: 'thu', short: 'Gio', long: 'Giovedì' },
+      { key: 'fri', short: 'Ven', long: 'Venerdì' },
+      { key: 'sat', short: 'Sab', long: 'Sabato' },
+      { key: 'sun', short: 'Dom', long: 'Domenica' },
+    ];
+    const START_HOUR = 6, END_HOUR = 24;
+    const ROWS = (END_HOUR - START_HOUR) * 2; // 36 rows of 30 min
+
+    // initial state: a "filled" mockup with realistic ranges
+    // active[dayIndex][rowIndex] = true if open
+    // booked[dayIndex][rowIndex] = true if held by an existing booking (read-only)
+    const active = DAYS.map(() => new Array(ROWS).fill(false));
+    const booked = DAYS.map(() => new Array(ROWS).fill(false));
+
+    function rowFor(hour, minute) {
+      return (hour - START_HOUR) * 2 + (minute >= 30 ? 1 : 0);
+    }
+    function setRange(dayIdx, fromH, fromM, toH, toM, arr) {
+      const a = rowFor(fromH, fromM), b = rowFor(toH, toM);
+      for (let r = a; r < b; r++) arr[dayIdx][r] = true;
+    }
+
+    // Lun–Ven: 9–13 + 15–19
+    for (let d = 0; d < 5; d++) {
+      setRange(d, 9, 0, 13, 0, active);
+      setRange(d, 15, 0, 19, 0, active);
+    }
+    // Sabato: 10–20
+    setRange(5, 10, 0, 20, 0, active);
+    // Domenica: 11–14 (riposo lungo)
+    setRange(6, 11, 0, 14, 0, active);
+
+    // Booked block: Mercoledì (idx 2) 16:00–17:00 (existing reservation)
+    setRange(2, 16, 0, 17, 0, booked);
+    // Quando una prenotazione esiste, la cella è "occupata" e visivamente
+    // sostituisce lo stato active (lo manteniamo per coerenza dei totali).
+    // Booked block 2: Sabato 11:30–12:30
+    setRange(5, 11, 30, 12, 30, booked);
+
+    function timeLabel(row) {
+      const total = START_HOUR * 60 + row * 30;
+      const h = Math.floor(total / 60), m = total % 60;
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+
+    function buildGrid() {
+      const g = document.getElementById('grid');
+      g.innerHTML = '';
+
+      // Header row
+      const corner = document.createElement('div');
+      corner.className = 'corner';
+      corner.textContent = 'h';
+      g.appendChild(corner);
+
+      DAYS.forEach((d, i) => {
+        const head = document.createElement('div');
+        head.className = 'day-head';
+        const open = active[i].filter(Boolean).length;
+        if (open > 0) head.classList.add('has-active');
+        const hours = (open * 0.5).toString().replace('.', ',');
+        head.innerHTML = `
+          <div class="dow">${d.short} <em>${weekdayDate(i)}</em></div>
+          <div class="count">${open === 0 ? 'chiuso' : hours + ' h'}</div>
+        `;
+        g.appendChild(head);
+      });
+
+      // Body rows
+      for (let r = 0; r < ROWS; r++) {
+        const isHour = (r % 2 === 0);
+        const tl = document.createElement('div');
+        tl.className = 'time-label' + (isHour ? '' : ' minor');
+        tl.textContent = isHour ? timeLabel(r) : '';
+        g.appendChild(tl);
+
+        DAYS.forEach((_, i) => {
+          const cell = document.createElement('div');
+          cell.className = 'cell' + (isHour ? ' hour' : ' minor');
+          if (booked[i][r]) {
+            cell.classList.add('booked');
+            const prev = r > 0 && booked[i][r - 1];
+            if (!prev) cell.classList.add('range-start');
+          } else if (active[i][r]) {
+            cell.classList.add('active');
+            const prev = r > 0 && active[i][r - 1] && !booked[i][r - 1];
+            if (!prev) cell.classList.add('range-start');
+          }
+          cell.dataset.day = i;
+          cell.dataset.row = r;
+          g.appendChild(cell);
+        });
+      }
+    }
+
+    function weekdayDate(idx) {
+      // pretend "this week" starts Monday May 5
+      const dates = [5, 6, 7, 8, 9, 10, 11];
+      return dates[idx];
+    }
+
+    buildGrid();
+
+    // ---- Drag-paint interaction ----
+    const grid = document.getElementById('grid');
+    let painting = false, paintMode = null;
+
+    grid.addEventListener('mousedown', e => {
+      const cell = e.target.closest('.cell');
+      if (!cell || cell.classList.contains('booked')) return;
+      painting = true;
+      grid.classList.add('dragging');
+      paintMode = cell.classList.contains('active') ? 'off' : 'on';
+      applyPaint(cell);
+      e.preventDefault();
+    });
+    grid.addEventListener('mouseover', e => {
+      if (!painting) return;
+      const cell = e.target.closest('.cell');
+      if (!cell || cell.classList.contains('booked')) return;
+      applyPaint(cell);
+    });
+    document.addEventListener('mouseup', () => {
+      if (!painting) return;
+      painting = false;
+      grid.classList.remove('dragging');
+      buildGrid(); // re-render to refresh range-start markers + counts
+      bumpChanges();
+    });
+
+    function applyPaint(cell) {
+      const d = +cell.dataset.day, r = +cell.dataset.row;
+      active[d][r] = (paintMode === 'on');
+      cell.classList.toggle('active', active[d][r]);
+    }
+
+    // ---- Presets ----
+    document.querySelectorAll('.preset-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const p = btn.dataset.preset;
+        if (p === 'work') {
+          for (let d = 0; d < 5; d++) {
+            active[d].fill(false);
+            setRange(d, 9, 0, 18, 0, active);
+          }
+        } else if (p === 'evening') {
+          for (let d = 0; d < 7; d++) setRange(d, 18, 0, 22, 0, active);
+        } else if (p === 'weekend') {
+          [5, 6].forEach(d => setRange(d, 10, 0, 20, 0, active));
+        }
+        buildGrid();
+        bumpChanges();
+      });
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      for (let d = 0; d < 7; d++) active[d].fill(false);
+      buildGrid();
+      bumpChanges();
+    });
+
+    // ---- Save ----
+    function showToast() {
+      const t = document.getElementById('toast');
+      t.style.display = 'flex';
+      setTimeout(() => t.style.display = 'none', 2200);
+    }
+    document.getElementById('saveBtn').addEventListener('click', showToast);
+    document.getElementById('saveBtn2').addEventListener('click', showToast);
+
+    let changes = 3;
+    function bumpChanges() {
+      changes++;
+      document.getElementById('changeCount').textContent = `${changes} modifiche non salvate`;
+    }
+  </script>
+</body>
+</html>
