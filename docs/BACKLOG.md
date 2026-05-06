@@ -91,7 +91,7 @@ Dopo questa storia, un host può attivare un listing perché appaia sulla mappa 
 
 #### US-003: Gestione disponibilità settimanale
 
-**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
+**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 5 | **Status:** REVIEW
 
 **Story**
 Come Giulia,
@@ -140,7 +140,7 @@ Dopo questa storia, un host può aggiornare qualsiasi campo del proprio listing 
 
 #### US-005: Mappa interattiva con bagni disponibili
 
-**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 5
+**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
 
 **Story**
 Come Marco (utente),

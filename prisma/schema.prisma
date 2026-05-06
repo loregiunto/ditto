@@ -50,10 +50,24 @@ model Listing {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
-  photos           ListingPhoto[]
+  photos             ListingPhoto[]
+  availabilityRules  AvailabilityRule[]
 
   @@index([hostId])
   @@map("listings")
+}
+
+model AvailabilityRule {
+  id          String   @id @default(uuid())
+  listingId   String
+  listing     Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  dayOfWeek   Int
+  startMinute Int
+  endMinute   Int
+  createdAt   DateTime @default(now())
+
+  @@index([listingId, dayOfWeek])
+  @@map("availability_rules")
 }
 
 model ListingPhoto {

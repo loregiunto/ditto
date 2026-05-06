@@ -127,13 +127,23 @@ export default async function HostDashboardPage() {
                 </p>
               </div>
 
-              <div className="flex items-center justify-end gap-2 border-t p-4 sm:border-t-0 sm:border-l">
+              <div className="flex flex-col items-stretch justify-center gap-2 border-t p-4 sm:items-end sm:border-t-0 sm:border-l">
                 <ListingStatusToggle
                   listingId={l.id}
                   status={l.status}
                   canPublish={gate.ok}
                   blockReason={blockReason}
                 />
+                <Link href={`/host/listings/${l.id}/availability`}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    data-testid="manage-availability-link"
+                    className="w-full sm:w-auto"
+                  >
+                    Gestisci disponibilità
+                  </Button>
+                </Link>
               </div>
             </li>
           ))}
