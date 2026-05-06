@@ -233,7 +233,7 @@ Dopo questa storia, un utente può aprire la pagina di dettaglio di un listing e
 
 #### US-009: Prenotazione istantanea
 
-**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5
+**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
 
 **Story**
 Come Marco,
