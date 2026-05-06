@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1440" />
+  <title>HomeRest — Geolocalizzazione disattivata</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .streets path { stroke: #DCD0B8; fill: none; }
+    .streets .major { stroke: #CFC0A4; stroke-width: 6; }
+    .streets .minor { stroke: #DCD0B8; stroke-width: 3; }
+    .streets .alley { stroke: #E5DBC4; stroke-width: 1.5; }
+    .streets .area-label {
+      font-family: var(--font-sans); font-size: 11px;
+      font-weight: 600;
+      fill: oklch(0.45 0.05 60);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+  </style>
+</head>
+<body>
+  <div class="map-shell">
+    <!-- Map canvas (centered on Roma — fallback) -->
+    <div class="map-canvas">
+      <div class="map-tiles"></div>
+
+      <svg class="streets map-streets" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <path class="major" d="M -50 220 C 200 240, 380 180, 600 230 S 980 320, 1200 240 S 1500 200, 1500 200" />
+        <path class="major" d="M -50 620 C 220 580, 460 660, 720 600 S 1100 520, 1500 600" />
+        <path class="major" d="M 280 -20 C 320 220, 280 460, 360 720" />
+        <path class="major" d="M 940 -20 C 920 240, 1000 480, 980 720" />
+        <path class="minor" d="M 150 50 L 250 880" />
+        <path class="minor" d="M 530 30 L 580 880" />
+        <path class="minor" d="M 760 0 L 800 900" />
+        <path class="minor" d="M 1180 50 L 1230 880" />
+        <path class="minor" d="M -20 380 L 1480 380" />
+        <path class="minor" d="M -20 800 L 1480 800" />
+        <path class="alley" d="M 350 140 L 380 380" />
+        <path class="alley" d="M 480 200 L 580 480" />
+        <path class="alley" d="M 700 380 L 760 620" />
+        <path class="alley" d="M 880 200 L 920 460" />
+
+        <text class="area-label" x="180" y="200">Trastevere</text>
+        <text class="area-label" x="660" y="180">Centro Storico</text>
+        <text class="area-label" x="1080" y="200">Monti</text>
+        <text class="area-label" x="280" y="780">Testaccio</text>
+        <text class="area-label" x="780" y="820">San Giovanni</text>
+        <text class="area-label" x="1180" y="780">Esquilino</text>
+      </svg>
+
+      <div class="map-grain"></div>
+
+      <!-- Pins (still showing even without geo, fallback to Roma centre) -->
+      <div class="pin private" style="left: 38%; top: 44%; animation-delay: 60ms;">
+        <div class="pin-bubble"><span class="pin-dot">€</span><span>3,50/h</span></div>
+      </div>
+      <div class="pin business" style="left: 56%; top: 38%; animation-delay: 120ms;">
+        <div class="pin-bubble"><span class="pin-dot">€</span><span>2,00/h</span></div>
+      </div>
+      <div class="pin private" style="left: 32%; top: 60%; animation-delay: 180ms;">
+        <div class="pin-bubble"><span class="pin-dot">€</span><span>4,00/h</span></div>
+      </div>
+      <div class="pin business" style="left: 64%; top: 58%; animation-delay: 240ms;">
+        <div class="pin-bubble"><span class="pin-dot">€</span><span>1,80/h</span></div>
+      </div>
+      <div class="pin private" style="left: 70%; top: 70%; animation-delay: 300ms;">
+        <div class="pin-bubble"><span class="pin-dot">€</span><span>3,00/h</span></div>
+      </div>
+
+      <div class="cluster lg" style="left: 24%; top: 75%; animation-delay: 360ms;">
+        <div class="cluster-bubble">17</div>
+      </div>
+      <div class="cluster" style="left: 80%; top: 26%; animation-delay: 420ms;">
+        <div class="cluster-bubble">8</div>
+      </div>
+      <div class="cluster sm" style="left: 88%; top: 60%; animation-delay: 480ms;">
+        <div class="cluster-bubble">4</div>
+      </div>
+    </div>
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <a class="brand" href="#">
+        <div class="brand-mark">h</div>
+        <div class="brand-name">Home<em>Rest</em></div>
+      </a>
+      <div class="topbar-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Cerca un quartiere, una via…</span>
+        <span class="kbd">⌘ K</span>
+      </div>
+      <div class="topbar-actions">
+        <a class="btn btn-ghost" href="#">Diventa host</a>
+        <a class="btn" href="#">Accedi</a>
+        <a class="btn btn-primary" href="#">Registrati</a>
+      </div>
+    </header>
+
+    <!-- Banner: geolocation denied -->
+    <div class="banner warn">
+      <span class="banner-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+      </span>
+      <div>
+        <strong>Posizione non disponibile.</strong> Mostriamo Roma centro come riferimento. Cerca un quartiere o attiva la geolocalizzazione.
+      </div>
+      <button>Riprova</button>
+      <button class="banner-close" aria-label="Chiudi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Filter strip (lower so banner has room) -->
+    <div class="filter-strip" style="top: 156px;">
+      <button class="chip active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        Disponibile ora
+        <span class="num">42</span>
+      </button>
+      <button class="chip">Prossime 2 ore</button>
+      <button class="chip">Tipo</button>
+      <button class="chip">Prezzo</button>
+      <button class="chip">Valutazione 4+</button>
+    </div>
+
+    <!-- Map controls -->
+    <div class="map-controls">
+      <div class="map-btn-group">
+        <button class="map-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <button class="map-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      </div>
+      <button class="map-btn" title="La mia posizione"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></button>
+    </div>
+
+    <div class="scale-bar">
+      <div class="bar"></div>
+      <span>500 m</span>
+    </div>
+  </div>
+</body>
+</html>

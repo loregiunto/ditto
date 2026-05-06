@@ -140,7 +140,7 @@ Dopo questa storia, un host può aggiornare qualsiasi campo del proprio listing 
 
 #### US-005: Mappa interattiva con bagni disponibili
 
-**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
+**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 5 | **Status:** REVIEW
 
 **Story**
 Come Marco (utente),
@@ -162,7 +162,7 @@ Dopo questa storia, un utente può aprire la home page e vedere una mappa Mapbox
 
 #### US-006: Ricerca per indirizzo
 
-**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3
+**Epic:** EP-002 | **Priority:** HIGH | **Story Points:** 3 | **Status:** PLANNED
 
 **Story**
 Come Marco,
