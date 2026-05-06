@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>I tuoi bagni — HomeRest Host Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+
+<!-- ============ TOPNAV ============ -->
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="#">
+      <span class="brand-mark">H</span>
+      <span class="brand-name">Home<em>Rest</em></span>
+    </a>
+
+    <span class="mode-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Modalità host
+    </span>
+
+    <div class="topnav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Cerca tra le tue prenotazioni…
+      <span class="kbd">⌘ K</span>
+    </div>
+
+    <div class="topnav-actions">
+      <button class="btn btn-sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        Notifiche
+      </button>
+      <button class="user-pill">
+        <span class="avatar sage">G</span>
+        <span class="name">Giulia</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- ============ TITLE ============ -->
+  <section class="title-block animate-up" style="animation-delay: 60ms;">
+    <div class="title-main">
+      <div class="eyebrow">Dashboard host · Milano</div>
+      <h1 class="page-title">I tuoi <em>bagni</em>.</h1>
+      <p class="page-subtitle">Tre annunci, una sola filosofia: ospitalità misurata in mezzore.</p>
+    </div>
+    <div class="title-actions">
+      <a class="btn btn-lg" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendario
+      </a>
+      <a class="btn btn-accent btn-lg" href="new-listing.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Nuovo bagno
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ ALERT (Stripe gate) ============ -->
+  <section class="alert-callout animate-up" style="animation-delay: 140ms;">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M6 16h2M12 16h2"/></svg>
+    </div>
+    <div class="body">
+      <strong>Manca un <em>passo</em> per ricevere prenotazioni.</strong>
+      <p>Collega il tuo conto Stripe per attivare i pagamenti. I bagni in DRAFT diventano pubblici solo dopo la verifica — di solito bastano 3 minuti.</p>
+      <div class="actions">
+        <a class="btn btn-accent btn-sm" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          Collega Stripe
+        </a>
+        <a class="btn btn-ghost btn-sm" href="#">Verifica più tardi</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STAT ROW ============ -->
+  <section class="stat-row animate-up" style="animation-delay: 220ms;">
+    <div class="stat-card">
+      <div class="label">Pubblicati</div>
+      <div class="value">2<span style="color: var(--ink-4); font-size: 18px;"> / 3</span></div>
+      <div class="delta muted">1 in bozza</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Prenotazioni · 30g</div>
+      <div class="value"><em>47</em></div>
+      <div class="delta">+12 vs mese scorso</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Incasso netto · 30g</div>
+      <div class="value">€ 312</div>
+      <div class="delta">+€ 84 vs mese scorso</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Valutazione media</div>
+      <div class="value">4,8<span style="color: var(--ink-4); font-size: 18px;"> ★</span></div>
+      <div class="delta muted">su 38 recensioni</div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION HEAD ============ -->
+  <section class="section-head animate-up" style="animation-delay: 280ms;">
+    <h2>Annunci <em>attivi</em></h2>
+    <div class="filter-pills">
+      <button class="filter-pill active">Tutti<span class="count">3</span></button>
+      <button class="filter-pill">Pubblicati<span class="count">1</span></button>
+      <button class="filter-pill">In bozza<span class="count">1</span></button>
+      <button class="filter-pill">Disattivati<span class="count">1</span></button>
+    </div>
+  </section>
+
+  <!-- ============ LISTING GRID ============ -->
+  <section class="listing-grid">
+
+    <!-- ACTIVE listing -->
+    <article class="listing-card animate-up" style="animation-delay: 340ms;">
+      <div class="listing-photo">
+        <span class="badge-pill badge-active photo-status"><span class="dot"></span>Pubblicato</span>
+        <div class="photo p1"></div>
+      </div>
+
+      <div class="listing-body">
+        <div class="listing-meta-top">
+          <span>Aggiornato 2 ore fa</span>
+          <span style="color: var(--ink-4);">·</span>
+          <span>ID 0427</span>
+        </div>
+        <h3 class="listing-title">Bagno con doccia in <em>Brera</em>, luminoso</h3>
+        <div class="listing-zone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-7-7.5-7-13a7 7 0 0 1 14 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span class="zone-name">Brera, Milano</span>
+          <span style="color: var(--ink-4);">· raggio 1 km</span>
+        </div>
+        <div class="listing-tags">
+          <span class="badge-pill badge-private">Privato</span>
+          <span class="badge-pill">Doccia</span>
+          <span class="badge-pill">Asciugamani</span>
+          <span class="badge-pill">Wi-Fi</span>
+        </div>
+        <div class="listing-stats">
+          <span class="stat">
+            <svg class="rating-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.1.6-5.4 4.7 1.7 6.8L12 17.3 5.6 21l1.7-6.8L1.9 9.5l7.1-.6z"/></svg>
+            <strong>4,9</strong> · 24 recensioni
+          </span>
+          <span class="stat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <strong>32</strong> prenotazioni · 30g
+          </span>
+          <span class="stat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            Risposta <strong>~ 4 min</strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="listing-side">
+        <div class="listing-price">€ 6,50<span class="unit"> / 30 min</span></div>
+        <div class="listing-actions">
+          <button class="btn btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            Gestisci disponibilità
+          </button>
+          <div class="row">
+            <button class="btn btn-sm">Modifica</button>
+            <button class="btn btn-sm btn-ghost">Disattiva</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- DRAFT listing -->
+    <article class="listing-card is-draft animate-up" style="animation-delay: 400ms;">
+      <div class="listing-photo">
+        <span class="badge-pill badge-draft photo-status"><span class="dot"></span>In bozza</span>
+        <div class="photo p3"></div>
+      </div>
+
+      <div class="listing-body">
+        <div class="listing-meta-top">
+          <span>Modificato 12 minuti fa</span>
+          <span style="color: var(--ink-4);">·</span>
+          <span>ID 0428</span>
+        </div>
+        <h3 class="listing-title">Bagno con vasca, <em>Navigli</em></h3>
+        <div class="listing-zone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-7-7.5-7-13a7 7 0 0 1 14 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span class="zone-name">Navigli, Milano</span>
+          <span style="color: var(--ink-4);">· raggio 1 km</span>
+        </div>
+        <div class="listing-tags">
+          <span class="badge-pill badge-business">Attività</span>
+          <span class="badge-pill">Vasca</span>
+          <span class="badge-pill badge-ghost">3 foto · ne servono 5</span>
+        </div>
+        <div class="listing-stats">
+          <span class="stat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 2.5"/></svg>
+            <strong>78%</strong> completato
+          </span>
+          <span class="stat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a9 9 0 1 1-3-7"/><path d="M21 4v7h-7"/></svg>
+            Ultima auto-bozza · ora
+          </span>
+        </div>
+      </div>
+
+      <div class="listing-side">
+        <div class="listing-price" style="color: var(--ink-3);">€ 8,00<span class="unit"> / 30 min</span></div>
+        <div class="listing-actions">
+          <button class="btn btn-sm btn-accent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12 12 22l-1.5-3.5L7 17l-3.5-1.5L2 12l3.5-3.5L7 5l3.5-1.5L12 2l1.5 3.5L17 7l1.5 3.5L22 12z"/></svg>
+            Continua e pubblica
+          </button>
+          <div class="row">
+            <button class="btn btn-sm">Modifica</button>
+            <button class="btn btn-sm btn-ghost">Elimina</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- INACTIVE listing -->
+    <article class="listing-card is-inactive animate-up" style="animation-delay: 460ms;">
+      <div class="listing-photo">
+        <span class="badge-pill badge-inactive photo-status"><span class="dot"></span>Disattivato</span>
+        <div class="photo p2"></div>
+      </div>
+
+      <div class="listing-body">
+        <div class="listing-meta-top">
+          <span>Disattivato il 14 aprile</span>
+          <span style="color: var(--ink-4);">·</span>
+          <span>ID 0312</span>
+        </div>
+        <h3 class="listing-title">Bagno con doccia, <em>Isola</em></h3>
+        <div class="listing-zone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-7-7.5-7-13a7 7 0 0 1 14 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span class="zone-name">Isola, Milano</span>
+          <span style="color: var(--ink-4);">· raggio 1 km</span>
+        </div>
+        <div class="listing-tags">
+          <span class="badge-pill badge-private">Privato</span>
+          <span class="badge-pill">Doccia</span>
+          <span class="badge-pill">Phon</span>
+        </div>
+        <div class="listing-stats">
+          <span class="stat">
+            <svg class="rating-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.1.6-5.4 4.7 1.7 6.8L12 17.3 5.6 21l1.7-6.8L1.9 9.5l7.1-.6z"/></svg>
+            <strong>4,7</strong> · 14 recensioni
+          </span>
+          <span class="stat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+            <strong>0</strong> prenotazioni · 30g
+          </span>
+        </div>
+      </div>
+
+      <div class="listing-side">
+        <div class="listing-price" style="color: var(--ink-3);">€ 5,00<span class="unit"> / 30 min</span></div>
+        <div class="listing-actions">
+          <button class="btn btn-sm btn-accent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 5 5L20 7"/></svg>
+            Pubblica di nuovo
+          </button>
+          <div class="row">
+            <button class="btn btn-sm">Modifica</button>
+            <button class="btn btn-sm btn-ghost">Archivia</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div>© 2026 HomeRest · Milano · Modalità host</div>
+  <div class="links">
+    <a href="#">Centro assistenza host</a>
+    <a href="#">Politiche</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pubblica il tuo bagno — HomeRest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+
+<!-- ============ TOPNAV ============ -->
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">H</span>
+      <span class="brand-name">Home<em>Rest</em></span>
+    </a>
+    <span class="mode-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Modalità host
+    </span>
+    <div class="topnav-actions">
+      <a class="btn btn-sm btn-ghost" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+        Dashboard
+      </a>
+      <button class="user-pill">
+        <span class="avatar sage">G</span>
+        <span class="name">Giulia</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- ============ CRUMBS ============ -->
+  <nav class="crumbs animate-up" style="animation-delay: 40ms;">
+    <a href="index.html">Dashboard</a>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span class="current">Nuovo bagno</span>
+  </nav>
+
+  <!-- ============ TITLE ============ -->
+  <section class="title-block animate-up" style="animation-delay: 100ms;">
+    <div class="title-main">
+      <div class="eyebrow">Crea annuncio · Bozza salvata in automatico</div>
+      <h1 class="page-title">Pubblica il tuo <em>bagno</em>.</h1>
+      <p class="page-subtitle">Cinque minuti per descriverlo bene. Bastano davvero, lo promettiamo.</p>
+    </div>
+  </section>
+
+  <!-- ============ FORM LAYOUT ============ -->
+  <div class="form-layout">
+
+    <!-- STEP NAV -->
+    <aside class="step-nav animate-up" style="animation-delay: 140ms;">
+      <div class="step-nav-title">Passi</div>
+      <ol class="step-list">
+        <li class="done"><span class="num"><span>1</span></span> Tipo host</li>
+        <li class="active"><span class="num">2</span> Il bagno</li>
+        <li><span class="num">3</span> Indirizzo</li>
+        <li><span class="num">4</span> Prezzo</li>
+        <li><span class="num">5</span> Foto</li>
+        <li><span class="num">6</span> Anteprima</li>
+      </ol>
+    </aside>
+
+    <!-- FORM CONTENT -->
+    <div>
+
+      <!-- ============ TIPO HOST ============ -->
+      <section class="form-card animate-up" style="animation-delay: 180ms;">
+        <div class="form-card-head">
+          <h3>Sei un <em>privato</em> o un'<em>attività</em>?</h3>
+          <span class="step">Passo 1 / 6</span>
+        </div>
+        <p class="form-card-sub">Cambia cosa appare nei dettagli annuncio e quale documentazione fiscale ti chiediamo.</p>
+
+        <div class="radio-cards">
+          <label class="radio-card selected">
+            <span class="dot"></span>
+            <div class="body">
+              <div class="top">
+                <h4>Privato</h4>
+                <span class="badge-pill badge-private">Privato</span>
+              </div>
+              <p>Affitto occasionale del mio bagno di casa. Nessuna partita IVA richiesta — la tassazione è gestita come prestazione occasionale.</p>
+            </div>
+          </label>
+
+          <label class="radio-card">
+            <span class="dot"></span>
+            <div class="body">
+              <div class="top">
+                <h4>Attività</h4>
+                <span class="badge-pill badge-business">Attività</span>
+              </div>
+              <p>Bar, hotel, palestra, coworking. Ti chiediamo partita IVA e dati fatturazione per l'emissione automatica delle ricevute.</p>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- ============ IL BAGNO ============ -->
+      <section class="form-card animate-up" style="animation-delay: 240ms;">
+        <div class="form-card-head">
+          <h3>Il <em>bagno</em></h3>
+          <span class="step">Passo 2 / 6</span>
+        </div>
+        <p class="form-card-sub">Un titolo evocativo e una descrizione onesta valgono più di mille filtri.</p>
+
+        <div class="field">
+          <label class="field-label">Titolo<span class="req">*</span></label>
+          <input class="input" type="text" value="Bagno con doccia in Brera, luminoso" placeholder="Es. Bagno tranquillo con doccia, vicino metro" />
+          <div class="field-hint"><span class="count">36</span> / 60 caratteri · <strong>Suggerimento:</strong> includi zona e una caratteristica.</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Descrizione<span class="req">*</span></label>
+          <textarea class="textarea" placeholder="Racconta lo spazio, la pulizia, l'accesso. Cosa lo rende speciale?">Un bagno luminoso con piastrelle pastello, doccia walk-in e finestra che dà su un cortile interno. Accesso indipendente dal pianerottolo, asciugamani e prodotti puliti per ogni ospite. Tre minuti a piedi dalla fermata Lanza.</textarea>
+          <div class="field-hint"><span class="count">256</span> / 600 caratteri</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Tipologia</label>
+            <input class="input" type="text" value="Doccia + lavabo + WC" />
+          </div>
+          <div class="field">
+            <label class="field-label">Accesso</label>
+            <input class="input" type="text" value="Privato (chiave consegnata)" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ INDIRIZZO ============ -->
+      <section class="form-card animate-up" style="animation-delay: 300ms;">
+        <div class="form-card-head">
+          <h3>Dove <em>si trova</em></h3>
+          <span class="step">Passo 3 / 6</span>
+        </div>
+        <p class="form-card-sub">Mostriamo agli ospiti solo la zona e un raggio di 1 km. L'indirizzo esatto compare dopo la prenotazione.</p>
+
+        <div class="field">
+          <label class="field-label">Indirizzo<span class="req">*</span></label>
+          <input class="input" type="text" value="Via Pontaccio 12, Milano" placeholder="Inizia a digitare…" />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Quartiere mostrato</label>
+            <input class="input" type="text" value="Brera, Milano" />
+          </div>
+          <div class="field">
+            <label class="field-label">CAP</label>
+            <input class="input" type="text" value="20121" />
+          </div>
+        </div>
+
+        <div style="margin-top: 8px; padding: 14px; background: var(--bg-sunk); border-radius: var(--r-md); display: flex; align-items: flex-start; gap: 12px;">
+          <svg style="width:18px;height:18px;color:var(--terracotta);flex-shrink:0;margin-top:2px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+          <div style="font-size: 13px; color: var(--ink-2); line-height: 1.5;">
+            <strong style="color: var(--ink); font-weight: 600;">Privacy garantita.</strong> Mostriamo solo un cerchio approssimativo (raggio 1&nbsp;km) sulla mappa pubblica. L'indirizzo preciso viene rivelato all'ospite solo a prenotazione confermata.
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PREZZO ============ -->
+      <section class="form-card animate-up" style="animation-delay: 360ms;">
+        <div class="form-card-head">
+          <h3>Quanto <em>chiedi</em></h3>
+          <span class="step">Passo 4 / 6</span>
+        </div>
+        <p class="form-card-sub">Lo slot base dura 30 minuti. La media a Brera è € 5,50.</p>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Prezzo per slot<span class="req">*</span></label>
+            <div class="input-group">
+              <span class="prefix">€</span>
+              <input class="input" type="text" value="6,50" />
+              <span class="suffix">/ 30 min</span>
+            </div>
+            <div class="field-hint">Commissione HomeRest: 12% · <strong>Tu ricevi € 5,72</strong></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Slot minimo prenotabile</label>
+            <input class="input" type="text" value="1 slot · 30 minuti" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FOTO ============ -->
+      <section class="form-card animate-up" style="animation-delay: 420ms;">
+        <div class="form-card-head">
+          <h3>Le <em>foto</em></h3>
+          <span class="step">Passo 5 / 6</span>
+        </div>
+        <p class="form-card-sub">Almeno 5 foto, illuminazione naturale. La prima diventa la copertina dell'annuncio.</p>
+
+        <div class="photo-grid">
+          <div class="photo-tile cover">
+            <div class="photo p1"></div>
+            <button class="remove" aria-label="Rimuovi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="photo-tile">
+            <div class="photo p3"></div>
+            <button class="remove" aria-label="Rimuovi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="photo-tile">
+            <div class="photo p4"></div>
+            <button class="remove" aria-label="Rimuovi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="photo-tile">
+            <div class="photo p5"></div>
+            <button class="remove" aria-label="Rimuovi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="uploader">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8 12 3 7 8"/><path d="M12 3v12"/></svg>
+          </div>
+          <h4>Aggiungi <em>altre foto</em></h4>
+          <p>Trascina qui i file o clicca per sfogliare. Servono almeno 5 foto per pubblicare.</p>
+          <button class="btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Carica foto
+          </button>
+          <div class="formats">JPG · PNG · HEIC · max 8 MB</div>
+        </div>
+      </section>
+
+      <!-- ============ FORM FOOTER ============ -->
+      <div class="form-footer animate-up" style="animation-delay: 500ms;">
+        <div class="save-state">
+          <span class="pulse"></span>
+          Bozza salvata · 12:42
+        </div>
+        <div class="actions">
+          <a class="btn btn-ghost" href="index.html">Annulla</a>
+          <button class="btn">Salva bozza</button>
+          <button class="btn btn-accent">
+            Continua
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="foot">
+  <div>© 2026 HomeRest · Milano · Modalità host</div>
+  <div class="links">
+    <a href="#">Centro assistenza host</a>
+    <a href="#">Politiche</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

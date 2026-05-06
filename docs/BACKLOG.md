@@ -11,7 +11,7 @@
 
 | Epic | Titolo | Stories | Story Points | Scope |
 |---|---|---|---|---|
-| EP-001 | Listing Management | 4 | 15 | MVP |
+| EP-001 | Listing Management | 5 | 18 | MVP |
 | EP-002 | Discovery & Mappa | 4 | 14 | MVP |
 | EP-003 | Flusso Prenotazione | 4 | 16 | MVP |
 | EP-004 | Onboarding & Verifica Host | 2 | 8 | MVP |
@@ -19,10 +19,10 @@
 | EP-006 | Profili Utente & Host | 4 | 11 | MVP / Growth |
 | EP-007 | Notifiche | 5 | 10 | MVP / Growth |
 
-**Total stories:** 26
-**Total story points:** 82
+**Total stories:** 27
+**Total story points:** 85
 **MVP stories (HIGH priority):** 17 (60pt)
-**MEDIUM priority:** 8 (21pt)
+**MEDIUM priority:** 9 (24pt)
 **LOW priority:** 1 (1pt)
 
 ---
@@ -128,6 +128,33 @@ Dopo questa storia, un host può aggiornare qualsiasi campo del proprio listing 
 - [ ] Le modifiche sono riflesse immediatamente sulla pagina pubblica del listing
 - [ ] La modifica dell'indirizzo richiede una nuova geocodifica Mapbox
 - [ ] Le modifiche al prezzo si applicano solo alle prenotazioni future (non a quelle già confermate)
+
+---
+
+#### US-027: Allineamento UI di creazione e gestione listing al design system
+
+**Epic:** EP-001 | **Priority:** MEDIUM | **Story Points:** 3 | **Status:** REVIEW
+
+**Extends existing boilerplate: shadcn/ui + Tailwind design tokens (`globals.css`)**
+
+**Story**
+Come Giulia (host),
+voglio che la pagina di creazione listing (US-001) e la dashboard host (US-002) usino lo stesso linguaggio visivo "warm Italian" già adottato nelle pagine pubbliche (mappa, ricerca, dettaglio listing),
+così da avere un'esperienza coerente, professionale e riconoscibile in tutta la piattaforma.
+
+**Demonstrates**
+Dopo questa storia, le viste lato host (form di creazione listing + dashboard "I tuoi bagni") sono visivamente allineate al design system di US-005, US-006 e US-008: palette warm neutrals + terracotta/sage, tipografia display Newsreader per titoli, eyebrow in mono, pulsanti pill, status badge nello stile "badge-pill".
+
+**Acceptance Criteria**
+- [ ] La pagina `/host/listings/new` usa la palette warm (`--bg`, `--ink`, `--terracotta`, `--sage`) e la tipografia display (Newsreader) per il titolo principale, con eyebrow in font mono
+- [ ] Il form di creazione listing è organizzato in sezioni stile "card warm" (bordo `--line`, sfondo `--bg-elev`, raggio `--r-lg`) anziché shadcn `<Card>` neutro; i selettori "Tipo host" usano un pattern radio-card coerente con i mockup esistenti
+- [ ] Il selettore "Tipo host" mostra i badge `badge-private`/`badge-business` con la stessa estetica della pagina dettaglio (US-008)
+- [ ] La pagina `/host/dashboard` ("I tuoi bagni") adotta topnav/brand, titolo display con `<em>` terracotta, e card listing con stile coerente ai mockup (US-008 detail / US-006 list card)
+- [ ] Lo status badge dei listing (DRAFT / ACTIVE / INACTIVE) usa `.badge-pill` con varianti coerenti (`badge-ghost`/`badge-business`/`badge-amber`) anziché classi ad hoc emerald/amber
+- [ ] I bottoni "Nuovo bagno", "Pubblica/Disattiva", "Gestisci disponibilità", "Salva bozza" usano la classe `.btn` (pill, accent terracotta per CTA primaria) coerente con le altre pagine
+- [ ] Lo stato vuoto ("Non hai ancora creato nessun listing") riprende il pattern `.slot-empty` / `.reviews-empty` dei mockup (icona circolare + titolo display con `<em>`, CTA pill)
+- [ ] Nessun comportamento funzionale viene modificato: tutte le interazioni esistenti (validazione, upload foto, toggle status, link disponibilità) e tutti i `data-testid` esistenti restano invariati
+- [ ] Verifica responsive: layout corretto a 360px (mobile) e ≥1024px (desktop)
 
 ---
 

@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
 import { MAX_PHOTOS } from "@/lib/validation/listing";
+import { cn } from "@/lib/utils";
 
 const BUCKET = "listing-photos";
 const MIME_TO_EXT: Record<string, string> = {
@@ -88,40 +88,62 @@ export function ListingPhotoUploader({
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-        {photos.map((p) => (
-          <div
-            key={p.path}
-            className="group relative aspect-square overflow-hidden rounded-md border"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={p.url}
-              alt="foto listing"
-              className="h-full w-full object-cover"
-            />
-            <button
-              type="button"
-              onClick={() => removePhoto(p)}
-              className="bg-destructive text-destructive-foreground absolute top-1 right-1 rounded px-2 py-0.5 text-xs opacity-0 transition group-hover:opacity-100"
-            >
-              Rimuovi
-            </button>
-          </div>
-        ))}
-      </div>
+    <div>
+      {photos.length > 0 && (
+        <div className="ds-photo-grid">
+          {photos.map((p) => (
+            <div key={p.path} className="ds-photo-tile">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.url} alt="foto listing" />
+              <button
+                type="button"
+                className="remove"
+                onClick={() => removePhoto(p)}
+                aria-label="Rimuovi foto"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                  aria-hidden="true"
+                >
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <div className="flex items-center gap-3">
-        <Button
+      <div className="ds-uploader">
+        <button
           type="button"
-          variant="outline"
+          className={cn(
+            "ds-btn",
+            (uploading || photos.length >= MAX_PHOTOS) && "disabled",
+          )}
           onClick={() => inputRef.current?.click()}
           disabled={uploading || photos.length >= MAX_PHOTOS}
         >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
           {uploading ? "Caricamento..." : "Aggiungi foto"}
-        </Button>
-        <p className="text-muted-foreground text-sm">
+        </button>
+        <p
+          style={{
+            marginTop: "10px",
+            fontSize: "13px",
+            color: "var(--ds-ink-3)",
+          }}
+        >
           {photos.length}/{MAX_PHOTOS} foto
         </p>
       </div>
@@ -132,10 +154,21 @@ export function ListingPhotoUploader({
         accept={ACCEPTED_MIME.join(",")}
         multiple
         className="hidden"
+        style={{ display: "none" }}
         onChange={(e) => handleFiles(e.target.files)}
       />
 
-      {error && <p className="text-destructive text-sm">{error}</p>}
+      {error && (
+        <p
+          style={{
+            marginTop: "10px",
+            fontSize: "13px",
+            color: "oklch(0.42 0.13 25)",
+          }}
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }

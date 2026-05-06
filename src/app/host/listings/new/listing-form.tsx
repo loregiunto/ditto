@@ -2,21 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
 import {
   ListingPhotoUploader,
   type UploadedPhoto,
 } from "@/components/listing-photo-uploader";
+import { DsBadge } from "@/components/design-system";
+import { cn } from "@/lib/utils";
 import {
   listingInputSchema,
   TITLE_MIN,
@@ -77,7 +69,9 @@ export function ListingForm({ userId }: { userId: string }) {
     const parsed = listingInputSchema.safeParse(payload);
     if (!parsed.success) {
       const first = parsed.error.issues[0];
-      setError(first ? `${first.path.join(".")}: ${first.message}` : "Dati non validi.");
+      setError(
+        first ? `${first.path.join(".")}: ${first.message}` : "Dati non validi.",
+      );
       return;
     }
 
@@ -101,163 +95,217 @@ export function ListingForm({ userId }: { userId: string }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Tipo di host</CardTitle>
-          <CardDescription>
-            Indica se ospiti come privato o come attività commerciale.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <fieldset className="flex flex-col gap-3" aria-label="Tipo di host">
-            <label className="hover:bg-accent flex cursor-pointer items-start gap-3 rounded-md border p-3">
-              <input
-                type="radio"
-                name="hostType"
-                value="PRIVATE"
-                checked={state.hostType === "PRIVATE"}
-                onChange={() => update("hostType", "PRIVATE")}
-                className="mt-1"
-              />
-              <div className="flex flex-col">
-                <span className="font-medium">🏠 Privato</span>
-                <span className="text-muted-foreground text-sm">
-                  Apri un tuo bagno di casa.
-                </span>
+    <form onSubmit={handleSubmit}>
+      {/* TIPO HOST */}
+      <section className="ds-card">
+        <div className="ds-card-head">
+          <h3 className="ds-section-title">
+            Sei un <em>privato</em> o un&apos;<em>attività</em>?
+          </h3>
+          <span className="ds-card-step">Passo 1 / 4</span>
+        </div>
+        <p className="ds-card-sub">
+          Indica se ospiti come privato o come attività commerciale.
+        </p>
+
+        <fieldset className="ds-radio-cards" aria-label="Tipo di host">
+          <legend className="sr-only">Tipo di host</legend>
+          <label
+            className={cn(
+              "ds-radio-card",
+              state.hostType === "PRIVATE" && "selected",
+            )}
+          >
+            <input
+              type="radio"
+              name="hostType"
+              value="PRIVATE"
+              checked={state.hostType === "PRIVATE"}
+              onChange={() => update("hostType", "PRIVATE")}
+            />
+            <span className="ds-radio-dot" aria-hidden="true" />
+            <div className="ds-radio-body">
+              <div className="ds-radio-top">
+                <h4>Privato</h4>
+                <DsBadge variant="private">Privato</DsBadge>
               </div>
-            </label>
-            <label className="hover:bg-accent flex cursor-pointer items-start gap-3 rounded-md border p-3">
-              <input
-                type="radio"
-                name="hostType"
-                value="BUSINESS"
-                checked={state.hostType === "BUSINESS"}
-                onChange={() => update("hostType", "BUSINESS")}
-                className="mt-1"
-              />
-              <div className="flex flex-col">
-                <span className="font-medium">🏪 Attività Commerciale</span>
-                <span className="text-muted-foreground text-sm">
-                  Bar, B&B, studio o altra attività con P.IVA.
-                </span>
+              <p>
+                Affitto occasionale del tuo bagno di casa. Nessuna partita IVA
+                richiesta.
+              </p>
+            </div>
+          </label>
+
+          <label
+            className={cn(
+              "ds-radio-card",
+              state.hostType === "BUSINESS" && "selected",
+            )}
+          >
+            <input
+              type="radio"
+              name="hostType"
+              value="BUSINESS"
+              checked={state.hostType === "BUSINESS"}
+              onChange={() => update("hostType", "BUSINESS")}
+            />
+            <span className="ds-radio-dot" aria-hidden="true" />
+            <div className="ds-radio-body">
+              <div className="ds-radio-top">
+                <h4>Attività</h4>
+                <DsBadge variant="business">Attività</DsBadge>
               </div>
-            </label>
-          </fieldset>
-        </CardContent>
-      </Card>
+              <p>
+                Bar, B&amp;B, studio o altra attività con P.IVA. Ricevute
+                automatiche.
+              </p>
+            </div>
+          </label>
+        </fieldset>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Il bagno</CardTitle>
-          <CardDescription>
-            Titolo, descrizione e indirizzo del tuo spazio.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="title">Titolo</Label>
-            <Input
-              id="title"
-              value={state.title}
-              onChange={(e) => update("title", e.target.value)}
-              placeholder="Bagno luminoso in centro storico"
-              minLength={TITLE_MIN}
-              required
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="description">Descrizione</Label>
-            <Textarea
-              id="description"
-              rows={5}
-              value={state.description}
-              onChange={(e) => update("description", e.target.value)}
-              placeholder="Pulito, riscaldato, con asciugamani e prodotti igienici."
-              minLength={DESC_MIN}
-              required
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="address">Indirizzo</Label>
-            <Input
-              id="address"
-              value={state.address}
-              onChange={(e) => update("address", e.target.value)}
-              placeholder="Via Roma 1, Firenze"
-              required
-            />
-            <p className="text-muted-foreground text-xs">
-              L'indirizzo esatto non sarà mai visibile prima della prenotazione.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+      {/* IL BAGNO */}
+      <section className="ds-card">
+        <div className="ds-card-head">
+          <h3 className="ds-section-title">
+            Il <em>bagno</em>
+          </h3>
+          <span className="ds-card-step">Passo 2 / 4</span>
+        </div>
+        <p className="ds-card-sub">
+          Titolo, descrizione e indirizzo del tuo spazio.
+        </p>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Prezzo</CardTitle>
-          <CardDescription>
-            Tariffa oraria in euro (min €{(PRICE_MIN_CENTS / 100).toFixed(2)},
-            max €{(PRICE_MAX_CENTS / 100).toFixed(2)}).
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="price">Prezzo orario (€)</Label>
-            <Input
-              id="price"
-              type="number"
-              step="0.50"
-              min={PRICE_MIN_CENTS / 100}
-              max={PRICE_MAX_CENTS / 100}
-              value={state.hourlyPriceEuros}
-              onChange={(e) => update("hourlyPriceEuros", e.target.value)}
-              required
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Foto</CardTitle>
-          <CardDescription>
-            Carica almeno 1 foto, fino a 10. Formati: JPEG, PNG, WebP.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ListingPhotoUploader
-            userId={userId}
-            draftId={draftId}
-            photos={photos}
-            onChange={setPhotos}
-            onUploadingChange={setPhotosUploading}
+        <div className="ds-field">
+          <Label htmlFor="title" className="ds-field-label">
+            Titolo<span className="req">*</span>
+          </Label>
+          <input
+            id="title"
+            className="ds-input"
+            value={state.title}
+            onChange={(e) => update("title", e.target.value)}
+            placeholder="Bagno luminoso in centro storico"
+            minLength={TITLE_MIN}
+            required
           />
-        </CardContent>
-      </Card>
+        </div>
+
+        <div className="ds-field">
+          <Label htmlFor="description" className="ds-field-label">
+            Descrizione<span className="req">*</span>
+          </Label>
+          <textarea
+            id="description"
+            className="ds-textarea"
+            rows={5}
+            value={state.description}
+            onChange={(e) => update("description", e.target.value)}
+            placeholder="Pulito, riscaldato, con asciugamani e prodotti igienici."
+            minLength={DESC_MIN}
+            required
+          />
+        </div>
+
+        <div className="ds-field">
+          <Label htmlFor="address" className="ds-field-label">
+            Indirizzo<span className="req">*</span>
+          </Label>
+          <input
+            id="address"
+            className="ds-input"
+            value={state.address}
+            onChange={(e) => update("address", e.target.value)}
+            placeholder="Via Roma 1, Firenze"
+            required
+          />
+          <p className="ds-field-hint">
+            L&apos;indirizzo esatto non sarà mai visibile prima della
+            prenotazione.
+          </p>
+        </div>
+      </section>
+
+      {/* PREZZO */}
+      <section className="ds-card">
+        <div className="ds-card-head">
+          <h3 className="ds-section-title">
+            Quanto <em>chiedi</em>
+          </h3>
+          <span className="ds-card-step">Passo 3 / 4</span>
+        </div>
+        <p className="ds-card-sub">
+          Tariffa oraria in euro (min €{(PRICE_MIN_CENTS / 100).toFixed(2)},
+          max €{(PRICE_MAX_CENTS / 100).toFixed(2)}).
+        </p>
+
+        <div className="ds-field">
+          <Label htmlFor="price" className="ds-field-label">
+            Prezzo orario (€)<span className="req">*</span>
+          </Label>
+          <input
+            id="price"
+            className="ds-input"
+            type="number"
+            step="0.50"
+            min={PRICE_MIN_CENTS / 100}
+            max={PRICE_MAX_CENTS / 100}
+            value={state.hourlyPriceEuros}
+            onChange={(e) => update("hourlyPriceEuros", e.target.value)}
+            required
+          />
+        </div>
+      </section>
+
+      {/* FOTO */}
+      <section className="ds-card">
+        <div className="ds-card-head">
+          <h3 className="ds-section-title">
+            Le <em>foto</em>
+          </h3>
+          <span className="ds-card-step">Passo 4 / 4</span>
+        </div>
+        <p className="ds-card-sub">
+          Carica almeno 1 foto, fino a 10. Formati: JPEG, PNG, WebP.
+        </p>
+
+        <ListingPhotoUploader
+          userId={userId}
+          draftId={draftId}
+          photos={photos}
+          onChange={setPhotos}
+          onUploadingChange={setPhotosUploading}
+        />
+      </section>
 
       {error && (
-        <p className="text-destructive text-sm" role="alert">
+        <p className="ds-form-error" role="alert">
           {error}
         </p>
       )}
 
-      <div className="flex justify-end gap-3">
-        <Button
+      <div className="ds-form-footer">
+        <button
           type="button"
-          variant="outline"
-          onClick={() => router.push("/dashboard")}
+          className="ds-btn ds-btn-ghost"
+          onClick={() => router.push("/host/dashboard")}
         >
           Annulla
-        </Button>
-        <Button type="submit" disabled={submitting || photosUploading}>
+        </button>
+        <button
+          type="submit"
+          className={cn(
+            "ds-btn ds-btn-accent",
+            (submitting || photosUploading) && "disabled",
+          )}
+          disabled={submitting || photosUploading}
+        >
           {submitting
             ? "Salvataggio..."
             : photosUploading
               ? "Attendi caricamento foto..."
               : "Salva bozza"}
-        </Button>
+        </button>
       </div>
     </form>
   );

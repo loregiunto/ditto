@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type Status = "DRAFT" | "ACTIVE" | "INACTIVE";
 
@@ -29,6 +29,7 @@ export function ListingStatusToggle({
   const label = isActive ? "Disattiva" : "Pubblica";
 
   const disablePublish = !isActive && !canPublish;
+  const disabled = pending || disablePublish;
 
   async function onClick() {
     setPending(true);
@@ -45,9 +46,7 @@ export function ListingStatusToggle({
         return;
       }
 
-      toast.success(
-        isActive ? "Listing disattivato" : "Listing pubblicato",
-      );
+      toast.success(isActive ? "Listing disattivato" : "Listing pubblicato");
       startTransition(() => router.refresh());
     } catch {
       toast.error("Errore di rete, riprova");
@@ -57,16 +56,19 @@ export function ListingStatusToggle({
   }
 
   return (
-    <Button
+    <button
       type="button"
-      variant={isActive ? "outline" : "default"}
-      size="sm"
-      disabled={pending || disablePublish}
+      className={cn(
+        "ds-btn ds-btn-sm ds-btn-block",
+        isActive ? "ds-btn-ghost" : "ds-btn-accent",
+        disabled && "disabled",
+      )}
+      disabled={disabled}
       title={disablePublish && blockReason ? blockReason : undefined}
       onClick={onClick}
       data-testid="listing-status-toggle"
     >
       {pending ? "Aggiornamento…" : label}
-    </Button>
+    </button>
   );
 }

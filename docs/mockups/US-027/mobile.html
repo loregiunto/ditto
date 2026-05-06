@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>I tuoi bagni · mobile — HomeRest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* Force a 380px viewport feel for the mockup canvas */
+  body {
+    background: var(--bg-warm);
+    min-height: 100vh;
+    padding: 24px 0;
+  }
+  .device {
+    width: 380px;
+    margin: 0 auto;
+    background: var(--bg);
+    border-radius: 36px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg), 0 0 0 10px #1A1814, 0 0 0 11px #2A2520;
+    position: relative;
+  }
+  .device::before {
+    content: "";
+    position: absolute;
+    top: 8px; left: 50%; transform: translateX(-50%);
+    width: 90px; height: 24px;
+    background: #1A1814;
+    border-radius: 0 0 18px 18px;
+    z-index: 99;
+  }
+  .device-inner {
+    height: 820px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+  /* Override page width to fit device */
+  .device-inner .topnav { background: rgba(250, 247, 242, 0.96); }
+  .device-inner .topnav-inner { padding: 36px 16px 12px; gap: 10px; }
+  .device-inner .brand-name { font-size: 18px; }
+  .device-inner .brand-mark { width: 28px; height: 28px; font-size: 16px; }
+  .device-inner .mode-chip { font-size: 9.5px; padding: 4px 9px; }
+  .device-inner .topnav-search { display: none; }
+  .device-inner .page { padding: 18px 16px 100px; max-width: 100%; }
+  .device-inner .page-title { font-size: 38px; line-height: 1.04; }
+  .device-inner .page-subtitle { font-size: 15px; }
+  .device-inner .stat-row { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
+  .device-inner .stat-card { padding: 14px 14px; }
+  .device-inner .stat-card .value { font-size: 26px; }
+  .device-inner .listing-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  .device-inner .listing-photo { aspect-ratio: 16 / 10; }
+  .device-inner .listing-title { font-size: 20px; }
+  .device-inner .listing-side { flex-direction: row; align-items: center; justify-content: space-between; min-width: 0; gap: 10px; }
+  .device-inner .listing-actions { flex-direction: column; width: auto; align-items: flex-end; gap: 6px; }
+  .device-inner .listing-actions .row { gap: 4px; }
+  .device-inner .alert-callout { flex-direction: column; gap: 12px; padding: 14px; }
+  .device-inner .section-head h2 { font-size: 24px; }
+  .device-inner .filter-pills { width: 100%; overflow-x: auto; flex-wrap: nowrap; }
+  .device-inner .filter-pill { white-space: nowrap; font-size: 12px; padding: 5px 12px; }
+  .device-inner .title-actions { width: 100%; }
+  .device-inner .title-actions .btn { flex: 1; justify-content: center; }
+  .device-inner .listing-stats { gap: 10px 14px; font-size: 12px; }
+  .device-inner .foot { display: none; }
+
+  /* Mobile bottom tab bar */
+  .tab-bar {
+    position: sticky;
+    bottom: 0;
+    left: 0; right: 0;
+    background: rgba(250, 247, 242, 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 8px 4px 14px;
+    z-index: 60;
+  }
+  .tab-item {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    text-decoration: none;
+    border: 0; background: transparent;
+    cursor: pointer;
+  }
+  .tab-item svg { width: 20px; height: 20px; }
+  .tab-item.active { color: var(--terracotta); }
+  .tab-item.cta {
+    position: relative;
+  }
+  .tab-item.cta .fab {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: #fff;
+    display: grid; place-items: center;
+    box-shadow: 0 6px 18px color-mix(in oklch, var(--terracotta) 45%, transparent);
+    margin-top: -22px;
+    margin-bottom: 2px;
+  }
+  .tab-item.cta .fab svg { width: 22px; height: 22px; }
+
+  /* Caption beneath the device */
+  .caption {
+    text-align: center;
+    margin: 18px auto 0;
+    max-width: 380px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+</style>
+</head>
+<body>
+
+<div class="device">
+  <div class="device-inner">
+
+    <!-- TOPNAV -->
+    <header class="topnav">
+      <div class="topnav-inner">
+        <a class="brand" href="#">
+          <span class="brand-mark">H</span>
+          <span class="brand-name">Home<em>Rest</em></span>
+        </a>
+        <span class="mode-chip" style="margin-left: auto;">Host</span>
+        <button class="user-pill" style="padding: 3px 10px 3px 3px;">
+          <span class="avatar sage" style="width: 26px; height: 26px; font-size: 11px;">G</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="page">
+
+      <!-- TITLE -->
+      <section class="title-block animate-up" style="margin-bottom: 18px;">
+        <div class="title-main">
+          <div class="eyebrow">Dashboard host</div>
+          <h1 class="page-title">I tuoi <em>bagni</em>.</h1>
+          <p class="page-subtitle">Tre annunci attivi a Milano.</p>
+        </div>
+        <div class="title-actions" style="display: flex; gap: 8px; width: 100%; margin-top: 10px;">
+          <a class="btn btn-accent" href="new-listing.html" style="flex: 1; justify-content: center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Nuovo bagno
+          </a>
+        </div>
+      </section>
+
+      <!-- ALERT -->
+      <section class="alert-callout animate-up">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M6 16h2M12 16h2"/></svg>
+        </div>
+        <div class="body">
+          <strong>Collega <em>Stripe</em>.</strong>
+          <p>Senza Stripe, gli annunci restano in bozza. Bastano 3 minuti.</p>
+          <div class="actions">
+            <a class="btn btn-accent btn-sm" href="#">Collega ora</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="stat-row animate-up">
+        <div class="stat-card">
+          <div class="label">Pubblicati</div>
+          <div class="value">2 <span style="color: var(--ink-4); font-size: 16px;">/ 3</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Prenot. 30g</div>
+          <div class="value"><em>47</em></div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Incasso 30g</div>
+          <div class="value">€ 312</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Voto medio</div>
+          <div class="value">4,8 ★</div>
+        </div>
+      </section>
+
+      <!-- SECTION -->
+      <section class="section-head animate-up">
+        <h2>Annunci <em>attivi</em></h2>
+      </section>
+      <div class="filter-pills" style="margin-bottom: 14px; align-self: stretch; display: flex;">
+        <button class="filter-pill active">Tutti<span class="count">3</span></button>
+        <button class="filter-pill">Pubbl.<span class="count">1</span></button>
+        <button class="filter-pill">Bozze<span class="count">1</span></button>
+        <button class="filter-pill">Off<span class="count">1</span></button>
+      </div>
+
+      <!-- LISTINGS -->
+      <section class="listing-grid">
+
+        <!-- ACTIVE -->
+        <article class="listing-card animate-up">
+          <div class="listing-photo">
+            <span class="badge-pill badge-active photo-status"><span class="dot"></span>Pubblicato</span>
+            <div class="photo p1"></div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-meta-top">
+              <span>Aggiornato 2h fa</span>
+            </div>
+            <h3 class="listing-title">Bagno con doccia in <em>Brera</em></h3>
+            <div class="listing-zone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-7-7.5-7-13a7 7 0 0 1 14 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <span class="zone-name">Brera, Milano</span>
+            </div>
+            <div class="listing-tags">
+              <span class="badge-pill badge-private">Privato</span>
+              <span class="badge-pill">Doccia</span>
+              <span class="badge-pill">Wi-Fi</span>
+            </div>
+            <div class="listing-stats">
+              <span class="stat">
+                <svg class="rating-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.1.6-5.4 4.7 1.7 6.8L12 17.3 5.6 21l1.7-6.8L1.9 9.5l7.1-.6z"/></svg>
+                <strong>4,9</strong> · 24
+              </span>
+              <span class="stat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <strong>32</strong> prenot.
+              </span>
+            </div>
+          </div>
+          <div class="listing-side">
+            <div class="listing-price" style="font-size: 22px;">€ 6,50<span class="unit"> / 30'</span></div>
+            <div class="listing-actions">
+              <button class="btn btn-sm">Gestisci</button>
+              <button class="btn btn-sm btn-ghost">Modifica</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- DRAFT -->
+        <article class="listing-card is-draft animate-up">
+          <div class="listing-photo">
+            <span class="badge-pill badge-draft photo-status"><span class="dot"></span>In bozza</span>
+            <div class="photo p3"></div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-meta-top">
+              <span>78% completato</span>
+            </div>
+            <h3 class="listing-title">Bagno con vasca, <em>Navigli</em></h3>
+            <div class="listing-zone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-7-7.5-7-13a7 7 0 0 1 14 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <span class="zone-name">Navigli, Milano</span>
+            </div>
+            <div class="listing-tags">
+              <span class="badge-pill badge-business">Attività</span>
+              <span class="badge-pill badge-ghost">3 / 5 foto</span>
+            </div>
+          </div>
+          <div class="listing-side">
+            <div class="listing-price" style="font-size: 22px; color: var(--ink-3);">€ 8,00<span class="unit"> / 30'</span></div>
+            <div class="listing-actions">
+              <a class="btn btn-sm btn-accent" href="new-listing.html">Continua</a>
+              <button class="btn btn-sm btn-ghost">Elimina</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- INACTIVE -->
+        <article class="listing-card is-inactive animate-up">
+          <div class="listing-photo">
+            <span class="badge-pill badge-inactive photo-status"><span class="dot"></span>Disattivato</span>
+            <div class="photo p2"></div>
+          </div>
+          <div class="listing-body">
+            <div class="listing-meta-top">
+              <span>Off dal 14 apr</span>
+            </div>
+            <h3 class="listing-title">Bagno con doccia, <em>Isola</em></h3>
+            <div class="listing-zone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-7-7.5-7-13a7 7 0 0 1 14 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <span class="zone-name">Isola, Milano</span>
+            </div>
+            <div class="listing-tags">
+              <span class="badge-pill badge-private">Privato</span>
+              <span class="badge-pill">Doccia</span>
+            </div>
+          </div>
+          <div class="listing-side">
+            <div class="listing-price" style="font-size: 22px; color: var(--ink-3);">€ 5,00<span class="unit"> / 30'</span></div>
+            <div class="listing-actions">
+              <button class="btn btn-sm btn-accent">Pubblica</button>
+              <button class="btn btn-sm btn-ghost">Archivia</button>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+    </main>
+
+    <!-- BOTTOM TAB BAR -->
+    <nav class="tab-bar">
+      <a class="tab-item active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+        Annunci
+      </a>
+      <a class="tab-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendario
+      </a>
+      <a class="tab-item cta" href="new-listing.html">
+        <span class="fab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        Nuovo
+      </a>
+      <a class="tab-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V5a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+        Messaggi
+      </a>
+      <a class="tab-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        Profilo
+      </a>
+    </nav>
+
+  </div>
+</div>
+
+<div class="caption">— HomeRest mobile · 380 × 820 — Modalità host</div>
+
+</body>
+</html>

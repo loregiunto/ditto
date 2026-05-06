@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Inizia da qui — HomeRest Host Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="#">
+      <span class="brand-mark">H</span>
+      <span class="brand-name">Home<em>Rest</em></span>
+    </a>
+    <span class="mode-chip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Modalità host
+    </span>
+    <div class="topnav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Cerca tra le tue prenotazioni…
+      <span class="kbd">⌘ K</span>
+    </div>
+    <div class="topnav-actions">
+      <button class="user-pill">
+        <span class="avatar sage">G</span>
+        <span class="name">Giulia</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- TITLE -->
+  <section class="title-block animate-up" style="animation-delay: 60ms;">
+    <div class="title-main">
+      <div class="eyebrow">Dashboard host · Benvenuta, Giulia</div>
+      <h1 class="page-title">I tuoi <em>bagni</em>.</h1>
+      <p class="page-subtitle">Nessun annuncio per ora. È il momento giusto per il primo.</p>
+    </div>
+  </section>
+
+  <!-- EMPTY STATE -->
+  <section class="empty-state animate-up" style="animation-delay: 140ms;">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 10h18l-1 11H4z"/>
+        <path d="M8 10V6a4 4 0 0 1 8 0v4"/>
+        <circle cx="12" cy="15" r="1.5"/>
+      </svg>
+    </div>
+    <h3>Il primo <em>bagno</em> è una storia.</h3>
+    <p>
+      Inizia descrivendo lo spazio, scegli quanto chiedere, aggiungi cinque foto ben fatte. Ti guidiamo passo passo — dura cinque minuti, salviamo tutto in automatico.
+    </p>
+    <div class="empty-actions">
+      <a class="btn btn-accent btn-xl" href="new-listing.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Crea il primo bagno
+      </a>
+      <a class="btn btn-lg" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 11a3 3 0 1 1 4.5 2.6c-.7.4-1.5.8-1.5 1.7M12 18h.01"/></svg>
+        Come funziona
+      </a>
+    </div>
+    <div class="pioneer">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.9 7.1.6-5.4 4.7 1.7 6.8L12 17.3 5.6 21l1.7-6.8L1.9 9.5l7.1-.6z"/></svg>
+      Sei tra i primi 50 host di Milano · 0% commissione per il primo mese
+    </div>
+  </section>
+
+  <!-- HELP TILES -->
+  <section style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px;">
+    <article class="form-card" style="padding: 22px; margin-bottom: 0;">
+      <div style="font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--terracotta); margin-bottom: 10px;">— Suggerimento 01</div>
+      <h4 style="font-family: var(--font-display); font-size: 20px; font-weight: 500; letter-spacing: -0.015em; margin: 0 0 8px;">Foto in luce <em style="color: var(--terracotta); font-style: italic;">naturale</em>.</h4>
+      <p style="font-size: 13.5px; color: var(--ink-3); margin: 0; line-height: 1.55;">La mattina presto o nel tardo pomeriggio. Niente filtri, solo finestre aperte e un panno pulito sui rubinetti.</p>
+    </article>
+    <article class="form-card" style="padding: 22px; margin-bottom: 0;">
+      <div style="font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--terracotta); margin-bottom: 10px;">— Suggerimento 02</div>
+      <h4 style="font-family: var(--font-display); font-size: 20px; font-weight: 500; letter-spacing: -0.015em; margin: 0 0 8px;">Prezzo che <em style="color: var(--terracotta); font-style: italic;">attira</em>.</h4>
+      <p style="font-size: 13.5px; color: var(--ink-3); margin: 0; line-height: 1.55;">A Milano la media è € 5,50 per 30 minuti. Inizia leggermente sotto: le prime 5 prenotazioni costruiscono le recensioni.</p>
+    </article>
+    <article class="form-card" style="padding: 22px; margin-bottom: 0;">
+      <div style="font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--terracotta); margin-bottom: 10px;">— Suggerimento 03</div>
+      <h4 style="font-family: var(--font-display); font-size: 20px; font-weight: 500; letter-spacing: -0.015em; margin: 0 0 8px;">Risposta in <em style="color: var(--terracotta); font-style: italic;">10 minuti</em>.</h4>
+      <p style="font-size: 13.5px; color: var(--ink-3); margin: 0; line-height: 1.55;">Gli host più rapidi a rispondere alle richieste hanno il 3x delle prenotazioni. Notifiche push consigliate.</p>
+    </article>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div>© 2026 HomeRest · Milano · Modalità host</div>
+  <div class="links">
+    <a href="#">Centro assistenza host</a>
+    <a href="#">Politiche</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>
