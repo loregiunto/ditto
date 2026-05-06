@@ -2,9 +2,6 @@
   "name": "archetipo-workshop",
   "version": "1.0.0",
   "private": true,
-  "engines": {
-    "node": "22.x"
-  },
   "scripts": {
     "archetipo": "node .archetipo/cli/archetipo.mjs",
     "test:cli": "node --test .archetipo/cli/archetipo.test.mjs",
