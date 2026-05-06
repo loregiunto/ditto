@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   Bath,
@@ -75,9 +76,55 @@ export function ListingDetail({
   isAuthenticated,
   signInHref,
 }: Props) {
+  const router = useRouter();
   const [selectedSlot, setSelectedSlot] = useState<PublicSlot | null>(() =>
     firstAvailableSlot(slotDays),
   );
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleBook() {
+    if (!selectedSlot || submitting) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/bookings/instant/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          listingId: listing.id,
+          startsAt: selectedSlot.startsAt,
+          endsAt: selectedSlot.endsAt,
+        }),
+      });
+      if (!res.ok) {
+        const payload = await res.json().catch(() => ({}));
+        const code = payload?.code ?? "error";
+        const messages: Record<string, string> = {
+          slot_unavailable: "Lo slot non è più disponibile. Scegline un altro.",
+          past_slot: "Lo slot scelto è già passato.",
+          outside_rules: "Lo slot non rientra nella disponibilità dell'host.",
+          bad_granularity: "Durata slot non valida.",
+          not_instant: "Questo bagno non accetta prenotazioni istantanee.",
+        };
+        setError(messages[code] ?? "Impossibile avviare il pagamento.");
+        if (code === "slot_unavailable") {
+          router.refresh();
+        }
+        return;
+      }
+      const data = (await res.json()) as { checkoutUrl: string | null };
+      if (!data.checkoutUrl) {
+        setError("URL di pagamento non disponibile.");
+        return;
+      }
+      window.location.assign(data.checkoutUrl);
+    } catch {
+      setError("Errore di rete. Riprova.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   const selectedSlotDay = useMemo(
     () => slotDays.find((day) => day.dateKey === selectedSlot?.dateKey) ?? null,
@@ -424,10 +471,11 @@ export function ListingDetail({
                   <button
                     className={styles.btnAccent}
                     type="button"
-                    disabled
-                    title="Disponibile a breve"
+                    disabled={!selectedSlot || submitting}
+                    onClick={handleBook}
+                    data-testid="book-now-cta"
                   >
-                    Prenota ora
+                    {submitting ? "Avvio pagamento…" : "Prenota ora"}
                     <ArrowRight aria-hidden="true" />
                   </button>
                 ) : (
@@ -438,10 +486,16 @@ export function ListingDetail({
                 )}
               </div>
 
-              {isAuthenticated ? (
+              {error ? (
+                <div className={styles.bookingTooltip} role="alert">
+                  <Lock aria-hidden="true" />
+                  {error}
+                </div>
+              ) : isAuthenticated && isInstant ? (
                 <div className={styles.bookingTooltip}>
                   <Lock aria-hidden="true" />
-                  Disponibile a breve con US-009.
+                  Pagamento sicuro via Stripe. L&apos;indirizzo esatto sarà
+                  svelato dopo la conferma.
                 </div>
               ) : null}
 

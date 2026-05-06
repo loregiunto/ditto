@@ -8,6 +8,7 @@ import {
   toPublicDetailDTO,
   toPublicSlotDays,
 } from "@/lib/listings/detail";
+import { getBlockingBookingsForListing } from "@/lib/bookings/queries";
 import { ListingDetail } from "@/components/listings/listing-detail";
 
 export const dynamic = "force-dynamic";
@@ -64,12 +65,17 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const horizonEnd = new Date(
     now.getTime() + DETAIL_HORIZON_DAYS * 24 * 60 * 60 * 1000,
   );
+  const blockingBookings = await getBlockingBookingsForListing(listing.id, {
+    from: now,
+    to: horizonEnd,
+    now,
+  });
   const projectedSlots = weeklyRulesToSlots(
     listing.availabilityRules,
     now,
     horizonEnd,
     DETAIL_SLOT_MINUTES,
-    [],
+    blockingBookings,
   );
   const currentUser = await getCurrentUser();
 

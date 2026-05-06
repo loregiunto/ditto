@@ -83,6 +83,7 @@ describe("GET /api/listings/map", () => {
       "hostType",
       "photos",
       "availabilityRules",
+      "bookings",
     ]);
     expect(new Set(Object.keys(select))).toEqual(allowedTopLevel);
     expect(select.addressFull).toBeUndefined();

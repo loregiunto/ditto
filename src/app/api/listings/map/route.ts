@@ -11,6 +11,11 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   // Public endpoint — no auth required. The Prisma `select` is the structural
   // privacy guarantee: `addressFull` is never read from the DB nor serialized.
+  const now = new Date();
+  const windowEnd = new Date(
+    now.getTime() + AVAILABILITY_WINDOW_HOURS * 60 * 60 * 1000,
+  );
+
   const listings = await prisma.listing.findMany({
     where: { status: "ACTIVE" },
     select: {
@@ -27,16 +32,31 @@ export async function GET() {
       availabilityRules: {
         select: { dayOfWeek: true, startMinute: true, endMinute: true },
       },
+      bookings: {
+        where: {
+          endsAt: { gt: now },
+          startsAt: { lt: windowEnd },
+          OR: [
+            { status: "CONFIRMED" },
+            {
+              status: "PENDING_PAYMENT",
+              pendingExpiresAt: { gt: now },
+            },
+          ],
+        },
+        select: { startsAt: true, endsAt: true },
+      },
     },
   });
 
-  const now = new Date();
-  const windowEnd = new Date(
-    now.getTime() + AVAILABILITY_WINDOW_HOURS * 60 * 60 * 1000,
-  );
-
   const available = listings.filter((l) => {
-    const slots = weeklyRulesToSlots(l.availabilityRules, now, windowEnd);
+    const slots = weeklyRulesToSlots(
+      l.availabilityRules,
+      now,
+      windowEnd,
+      undefined,
+      l.bookings,
+    );
     return slots.length > 0;
   });
 

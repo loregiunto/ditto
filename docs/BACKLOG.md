@@ -260,7 +260,7 @@ Dopo questa storia, un utente può aprire la pagina di dettaglio di un listing e
 
 #### US-009: Prenotazione istantanea
 
-**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
+**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5 | **Status:** REVIEW
 
 **Story**
 Come Marco,
@@ -283,7 +283,7 @@ Dopo questa storia, un utente può selezionare uno slot disponibile su un listin
 
 #### US-010: Prenotazione su richiesta
 
-**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5
+**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
 
 **Story**
 Come Marco,

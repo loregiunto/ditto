@@ -19,6 +19,7 @@ model User {
   updatedAt       DateTime @updatedAt
 
   listings        Listing[]
+  bookings        Booking[]
 
   @@map("users")
 }
@@ -58,9 +59,48 @@ model Listing {
 
   photos             ListingPhoto[]
   availabilityRules  AvailabilityRule[]
+  bookings           Booking[]
 
   @@index([hostId])
   @@map("listings")
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  CANCELLED
+  REFUNDED
+}
+
+model Booking {
+  id                       String        @id @default(uuid())
+  listingId                String
+  listing                  Listing       @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  userId                   String
+  user                     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startsAt                 DateTime
+  endsAt                   DateTime
+  amountCents              Int
+  platformFeeCents         Int
+  status                   BookingStatus @default(PENDING_PAYMENT)
+  stripeCheckoutSessionId  String?       @unique
+  stripePaymentIntentId    String?       @unique
+  pendingExpiresAt         DateTime?
+  confirmedAt              DateTime?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+
+  @@index([listingId, startsAt, endsAt, status])
+  @@index([userId])
+  @@map("bookings")
+}
+
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now())
+
+  @@map("stripe_events")
 }
 
 model AvailabilityRule {

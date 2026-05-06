@@ -186,6 +186,9 @@ function loadPage(): ListingDetailPageModule["default"] {
     if (specifier === "@/components/listings/listing-detail") {
       return { ListingDetail: ListingDetailMock };
     }
+    if (specifier === "@/lib/bookings/queries") {
+      return { getBlockingBookingsForListing: async () => [] };
+    }
     return nodeRequire(specifier);
   };
 
