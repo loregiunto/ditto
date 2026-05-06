@@ -16,5 +16,52 @@ model User {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  listings   Listing[]
+
   @@map("users")
+}
+
+enum HostType {
+  PRIVATE
+  BUSINESS
+}
+
+enum ListingStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+model Listing {
+  id               String         @id @default(uuid())
+  hostId           String
+  host             User           @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  title            String
+  description      String
+  hostType         HostType
+  addressFull      String
+  addressDisplay   String
+  latitude         Float
+  longitude        Float
+  hourlyPriceCents Int
+  status           ListingStatus  @default(DRAFT)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  photos           ListingPhoto[]
+
+  @@index([hostId])
+  @@map("listings")
+}
+
+model ListingPhoto {
+  id        String   @id @default(uuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  url       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([listingId])
+  @@map("listing_photos")
 }

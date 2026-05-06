@@ -33,10 +33,12 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    request.nextUrl.pathname.startsWith("/dashboard")
-  ) {
+  const protectedPrefixes = ["/dashboard", "/host"];
+  const isProtected = protectedPrefixes.some((p) =>
+    request.nextUrl.pathname.startsWith(p),
+  );
+
+  if (!user && isProtected) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/signin";
     return NextResponse.redirect(url);

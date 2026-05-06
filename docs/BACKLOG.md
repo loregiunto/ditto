@@ -50,7 +50,7 @@
 
 #### US-001: Creazione listing bagno
 
-**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 5
+**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 5 | **Status:** REVIEW
 
 **Story**
 Come Giulia (host),
@@ -91,7 +91,7 @@ Dopo questa storia, un host può attivare un listing perché appaia sulla mappa 
 
 #### US-003: Gestione disponibilità settimanale
 
-**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 5
+**Epic:** EP-001 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
 
 **Story**
 Come Giulia,
