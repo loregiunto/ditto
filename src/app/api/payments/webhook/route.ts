@@ -7,7 +7,7 @@ import type Stripe from "stripe";
 
 export const dynamic = "force-dynamic";
 
-export const HOST_DECISION_WINDOW_MIN = 30;
+const HOST_DECISION_WINDOW_MIN = 30;
 
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
