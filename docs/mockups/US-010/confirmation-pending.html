@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HomeRest — Richiesta in attesa · Bagno via Lambro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 36px;
+      align-items: start;
+    }
+    .hero-wait {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 32px;
+      border-radius: var(--r-xl);
+      background:
+        radial-gradient(circle at 0% 0%, var(--amber-soft) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, oklch(0.95 0.04 60) 0, transparent 55%),
+        var(--bg-elev);
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .hero-wait::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent 0 28px, rgba(26,24,20,0.025) 28px 29px);
+      pointer-events: none;
+    }
+    .hero-wait .copy { position: relative; z-index: 1; }
+    .hero-wait .copy h2 {
+      margin: 8px 0 8px;
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+    .hero-wait .copy h2 em { font-style: italic; color: var(--terracotta); font-weight: 400; }
+    .hero-wait .copy p {
+      margin: 0 0 14px;
+      color: var(--ink-2);
+      font-size: 15px;
+      max-width: 50ch;
+    }
+    .hero-wait .meta {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 13px; color: var(--ink-3);
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
+    }
+    .hero-wait .meta .dot { width: 3px; height: 3px; background: var(--ink-4); border-radius: 50%; }
+
+    .next-steps { margin-bottom: 28px; }
+
+    .actions-row {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 1fr; }
+      .hero-wait { grid-template-columns: 1fr; text-align: center; padding: 28px 22px; }
+      .hero-wait .countdown-ring { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topnav">
+    <div class="topnav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">h</div>
+        <div class="brand-name">Home<em>Rest</em></div>
+      </a>
+      <div class="topnav-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Ricerca: bagni, docce, cucine…</span>
+        <span class="kbd">⌘ K</span>
+      </div>
+      <div class="topnav-actions">
+        <a class="btn btn-ghost" href="#">Le mie prenotazioni</a>
+        <button class="user-pill">
+          <div class="avatar sage">M</div>
+          <span class="name">Marco</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-narrow">
+
+    <nav class="crumbs animate-in" style="animation-delay: 60ms;">
+      <a href="index.html">Listing</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="#">Pagamento</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <span class="current">Richiesta inviata</span>
+    </nav>
+
+    <div class="animate-up" style="animation-delay: 100ms; margin-bottom: 28px;">
+      <div class="eyebrow amber">Richiesta #BKR-7821 · In attesa</div>
+      <h1 class="display">Sara sta <em>valutando</em> la tua richiesta.</h1>
+    </div>
+
+    <div class="layout">
+
+      <div>
+        <!-- Hero countdown -->
+        <section class="hero-wait animate-up" style="animation-delay: 160ms;">
+          <div class="countdown-ring">
+            <div class="inner">
+              <span class="min">22</span>
+              <span class="label">min residui</span>
+            </div>
+          </div>
+          <div class="copy">
+            <span class="badge-pill badge-amber">
+              <span class="dot-pulse"></span> In attesa di approvazione
+            </span>
+            <h2>Risposta entro le <em>15:31</em>.</h2>
+            <p>Lo slot è bloccato in modo esclusivo per te. Stripe ha pre-autorizzato € 6,00: l'addebito parte solo se Sara approva. Se non risponde in tempo, la pre-autorizzazione viene annullata in automatico.</p>
+            <div class="meta">
+              <span>RICHIESTA INVIATA · 14:31</span>
+              <span class="dot"></span>
+              <span>SCADENZA · 15:01</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Timeline -->
+        <section class="card animate-up" style="animation-delay: 220ms;">
+          <div class="card-header">
+            <h2>Cosa succede <em>adesso</em></h2>
+            <span class="badge-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Aggiornamento in tempo reale</span>
+          </div>
+
+          <div class="timeline">
+            <div class="tl-row done">
+              <div class="tl-bullet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="tl-content">
+                <div class="tl-title">Richiesta inviata</div>
+                <div class="tl-meta">14:31 · Pre-auth Stripe ch_3pXyZ confermata</div>
+                <div class="tl-detail">Hai bloccato lo slot delle 15:00. Stripe ha messo in pausa € 6,00 sulla Visa **** 4242.</div>
+              </div>
+            </div>
+            <div class="tl-row active">
+              <div class="tl-bullet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="tl-content">
+                <div class="tl-title">Sara sta decidendo</div>
+                <div class="tl-meta">In genere risponde in 12 min · scadenza 15:01</div>
+                <div class="tl-detail">Le abbiamo mandato una notifica push e una email. Tu non devi fare nulla: ti scriveremo qui appena risponde.</div>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-bullet">3</div>
+              <div class="tl-content">
+                <div class="tl-title muted">Indirizzo svelato + addebito</div>
+                <div class="tl-meta">Se approvata</div>
+                <div class="tl-detail" style="color: var(--ink-3);">Mostriamo via, civico, citofono e indicazioni. Stripe cattura il pagamento e ti manda la ricevuta.</div>
+              </div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-bullet">×</div>
+              <div class="tl-content">
+                <div class="tl-title muted">Oppure rilascio automatico</div>
+                <div class="tl-meta">Se rifiutata o scaduta</div>
+                <div class="tl-detail" style="color: var(--ink-3);">Annulliamo la pre-autorizzazione, lo slot torna libero e ti suggeriamo alternative qui vicino.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button class="btn btn-danger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="m19 6-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              Annulla la richiesta
+            </button>
+            <button class="btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Aggiungi un messaggio per Sara
+            </button>
+            <button class="btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Come funziona la pre-auth
+            </button>
+          </div>
+        </section>
+
+        <!-- Address locked -->
+        <section class="address-card locked animate-up" style="animation-delay: 280ms; margin-top: 22px;">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <h3>Indirizzo esatto protetto</h3>
+            <p>Vedrai via, civico e citofono solo dopo l'approvazione. Per ora hai a disposizione la zona: <strong>Porta Romana, vicino a Piazza Medaglie d'Oro</strong>.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right: summary -->
+      <aside class="card animate-up" style="animation-delay: 220ms; padding: 24px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;">Riepilogo richiesta</div>
+
+        <div class="listing-mini" style="border: 0; padding: 0; margin-bottom: 18px;">
+          <div class="thumb"><div class="photo p1"></div></div>
+          <div class="meta">
+            <h3 class="title">Bagno via Lambro</h3>
+            <div class="zone">Milano · Porta Romana</div>
+            <div class="pills">
+              <span class="badge-pill badge-private">Privato</span>
+              <span class="badge-pill badge-amber">Su richiesta</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; gap: 12px; padding: 16px; background: var(--bg-sunk); border-radius: var(--r-md); margin-bottom: 16px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px;">Slot</div>
+            <div style="font-family: var(--font-display); font-size: 19px; font-weight: 500; letter-spacing: -0.01em;">Oggi · 15:00 — 15:30</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px;">Host</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="avatar sage sm">S</div>
+              <span style="font-weight: 600; font-size: 14px;">Sara · Privato</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-lines">
+          <div class="price-row"><span>€ 6,00 × 1 slot</span><span>€ 6,00</span></div>
+          <div class="price-row"><span class="muted">Stato pagamento</span><span style="color: var(--amber-deep); font-weight: 600;">Pre-autorizzato</span></div>
+          <div class="price-row total"><span>Pre-auth attiva</span><span class="amount">€ 6,00</span></div>
+        </div>
+
+        <div style="display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; background: var(--bg); border: 1px dashed var(--line-strong); border-radius: var(--r-md); font-size: 12px; color: var(--ink-3); line-height: 1.5;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--terracotta); margin-top: 1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Sulla carta vedrai un blocco temporaneo, non un addebito reale. Verrà rilasciato in 1–3 giorni se Sara non approva.</span>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div>HomeRest · US-010 · Stato: PENDING_HOST_APPROVAL</div>
+    <div class="links">
+      <a href="index.html">← Listing detail</a>
+      <a href="confirmation-rejected.html">Stato rifiutato</a>
+      <a href="confirmation-expired.html">Stato scaduto</a>
+    </div>
+  </footer>
+</body>
+</html>

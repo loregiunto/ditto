@@ -283,7 +283,7 @@ Dopo questa storia, un utente può selezionare uno slot disponibile su un listin
 
 #### US-010: Prenotazione su richiesta
 
-**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5 | **Status:** PLANNED
+**Epic:** EP-003 | **Priority:** HIGH | **Story Points:** 5 | **Status:** REVIEW
 
 **Story**
 Come Marco,

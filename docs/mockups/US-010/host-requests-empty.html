@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HomeRest — Nessuna richiesta · Host</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .recent {
+      margin-top: 36px;
+    }
+    .recent-row {
+      display: grid;
+      grid-template-columns: 36px 1fr auto auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 18px;
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+    }
+    .recent-row + .recent-row { margin-top: 8px; }
+    .recent-row .ic-status {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+    }
+    .recent-row .ic-status.ok { background: var(--sage-soft); color: var(--sage-deep); }
+    .recent-row .ic-status.no { background: var(--rose-soft); color: var(--rose-deep); }
+    .recent-row .ic-status.exp { background: var(--bg-sunk); color: var(--ink-3); }
+    .recent-row .ic-status svg { width: 14px; height: 14px; }
+    .recent-row .name { font-weight: 600; font-size: 14px; }
+    .recent-row .meta { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+    .recent-row .when {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-3);
+    }
+    .recent-row .amount {
+      font-family: var(--font-display);
+      font-size: 17px; font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topnav">
+    <div class="topnav-inner">
+      <a class="brand" href="#">
+        <div class="brand-mark">h</div>
+        <div class="brand-name">Home<em>Rest</em></div>
+      </a>
+      <div class="host-tabs">
+        <a href="#">Listings</a>
+        <a href="#">Calendario</a>
+        <a href="host-requests.html" class="active">Richieste <span class="count" style="background: var(--bg-sunk); color: var(--ink-3);">0</span></a>
+        <a href="#">Guadagni</a>
+      </div>
+      <div class="topnav-actions">
+        <button class="btn btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <button class="user-pill">
+          <div class="avatar sage">S</div>
+          <span class="name">Sara · Host</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="animate-up" style="animation-delay: 100ms; margin-bottom: 22px;">
+      <div class="eyebrow sage">Inbox host · Tutto fatto</div>
+      <h1 class="display">Nessuna richiesta in <em>attesa</em>.</h1>
+      <p class="lead">Hai risposto a tutto. Quando un ospite invierà una nuova richiesta su un tuo listing in modalità "su richiesta", la troverai qui con un timer di 30 minuti.</p>
+    </div>
+
+    <!-- Empty hero -->
+    <section class="empty-hero animate-up" style="animation-delay: 160ms;">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h2>Inbox <em>pulita</em>, ottimo lavoro Sara.</h2>
+      <p>Tutte le richieste degli ultimi giorni sono state gestite in tempo. Continua così: il tuo tempo di risposta medio è di soli <strong style="color: var(--ink); font-weight: 600;">12 minuti</strong> — fra i top 10% degli host di Milano.</p>
+      <div class="actions">
+        <a class="btn btn-primary btn-lg" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Apri il calendario
+        </a>
+        <a class="btn btn-lg" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Modifica disponibilità
+        </a>
+      </div>
+    </section>
+
+    <!-- Tips -->
+    <div class="tips animate-up" style="animation-delay: 220ms;">
+      <div class="tip">
+        <div class="num">01 / Tempi</div>
+        <h4>Rispondi entro 15 min</h4>
+        <p>Le approvazioni rapide spingono il listing in cima ai risultati di ricerca per le 4 ore successive.</p>
+      </div>
+      <div class="tip">
+        <div class="num">02 / Notifiche</div>
+        <h4>Tieni le push attive</h4>
+        <p>Quando arriva una nuova richiesta, ricevi push, email e (se hai attivato) un SMS al numero di backup.</p>
+      </div>
+      <div class="tip">
+        <div class="num">03 / Confidenza</div>
+        <h4>Passa a "istantanea"</h4>
+        <p>Se ti fidi del processo HomeRest, la modalità istantanea elimina l'attesa e raddoppia il tasso di prenotazione.</p>
+      </div>
+    </div>
+
+    <!-- Recent activity -->
+    <section class="recent animate-up" style="animation-delay: 280ms;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;">
+        <h2 class="section-title" style="margin: 0;">Cronologia <em>recente</em></h2>
+        <a href="#" style="font-size: 13px; color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px;">Vedi tutto</a>
+      </div>
+
+      <div class="recent-row">
+        <div class="ic-status ok">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div class="name">Marco G. · Bagno via Lambro</div>
+          <div class="meta">Approvata in 9 min · slot 14:00 — 14:30</div>
+        </div>
+        <div class="when">Ieri · 13:42</div>
+        <div class="amount" style="color: var(--sage-deep);">+ € 7,65</div>
+      </div>
+
+      <div class="recent-row">
+        <div class="ic-status no">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div>
+          <div class="name">Anna R. · Doccia Cortile</div>
+          <div class="meta">Rifiutata da te in 3 min · slot 18:00</div>
+        </div>
+        <div class="when">Ieri · 11:20</div>
+        <div class="amount" style="color: var(--ink-3);">— € 0,00</div>
+      </div>
+
+      <div class="recent-row">
+        <div class="ic-status ok">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div class="name">Lorenzo F. · Bagno via Lambro</div>
+          <div class="meta">Approvata in 14 min · slot 09:30 — 10:00</div>
+        </div>
+        <div class="when">2 mag · 08:55</div>
+        <div class="amount" style="color: var(--sage-deep);">+ € 7,65</div>
+      </div>
+
+      <div class="recent-row">
+        <div class="ic-status exp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <div class="name">Elena B. · Bagno via Lambro</div>
+          <div class="meta">Scaduta in automatico · non hai risposto in tempo</div>
+        </div>
+        <div class="when">30 apr · 22:14</div>
+        <div class="amount" style="color: var(--ink-3);">— € 0,00</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div>HomeRest · US-010 · Inbox host (vuota)</div>
+    <div class="links">
+      <a href="host-requests.html">Stato con richieste</a>
+      <a href="index.html">← Listing detail</a>
+    </div>
+  </footer>
+</body>
+</html>

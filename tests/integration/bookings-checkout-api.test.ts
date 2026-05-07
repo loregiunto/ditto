@@ -162,9 +162,10 @@ describe("POST /api/bookings/instant/checkout", () => {
   });
 
   it("returns 409 when slot is taken (transaction reports overlap)", async () => {
+    const { SlotTakenError } = await import("@/lib/bookings/checkout");
     vi.mocked(getCurrentUser).mockResolvedValue(mockUser);
     vi.mocked(prisma.listing.findUnique).mockResolvedValue(activeListing as never);
-    vi.mocked(prisma.$transaction).mockRejectedValue(new Error("SLOT_TAKEN"));
+    vi.mocked(prisma.$transaction).mockRejectedValue(new SlotTakenError());
 
     const res = await POST(makeRequest(validBody));
     expect(res.status).toBe(409);

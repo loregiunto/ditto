@@ -67,9 +67,12 @@ model Listing {
 
 enum BookingStatus {
   PENDING_PAYMENT
+  PENDING_HOST_APPROVAL
   CONFIRMED
   CANCELLED
   REFUNDED
+  REJECTED
+  EXPIRED
 }
 
 model Booking {
@@ -86,6 +89,8 @@ model Booking {
   stripeCheckoutSessionId  String?       @unique
   stripePaymentIntentId    String?       @unique
   pendingExpiresAt         DateTime?
+  hostDecisionDeadline     DateTime?
+  hostDecidedAt            DateTime?
   confirmedAt              DateTime?
   createdAt                DateTime      @default(now())
   updatedAt                DateTime      @updatedAt

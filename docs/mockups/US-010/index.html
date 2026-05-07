@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HomeRest — Bagno via Lambro · Modalità su richiesta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    /* page-specific layout */
+    .detail-content {
+      display: grid;
+      grid-template-columns: 1fr 384px;
+      gap: 48px;
+      align-items: start;
+    }
+    .gallery-strip {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 6px;
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      height: 360px;
+      margin-bottom: 36px;
+      position: relative;
+    }
+    .gallery-strip .tile { position: relative; overflow: hidden; }
+    .gallery-strip .tile.hero { grid-row: 1 / 3; grid-column: 1 / 2; }
+    .gallery-strip .tile .photo { width: 100%; height: 100%; }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .info-tile {
+      padding: 14px 16px;
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      display: flex; align-items: flex-start; gap: 11px;
+    }
+    .info-tile .ic {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: var(--terracotta-soft);
+      color: var(--terracotta-deep);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .info-tile .ic svg { width: 16px; height: 16px; }
+    .info-tile.sage .ic { background: var(--sage-soft); color: var(--sage-deep); }
+    .info-tile.amber .ic { background: var(--amber-soft); color: var(--amber-deep); }
+    .info-tile h4 { margin: 0; font-size: 13.5px; font-weight: 600; }
+    .info-tile p { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
+
+    .description {
+      font-family: var(--font-display);
+      font-size: 17.5px;
+      line-height: 1.65;
+      color: var(--ink-2);
+      max-width: 62ch;
+      margin: 0 0 36px;
+    }
+    .description p:first-child::first-letter {
+      font-size: 50px;
+      float: left;
+      font-weight: 500;
+      line-height: 0.9;
+      padding: 6px 10px 0 0;
+      color: var(--terracotta);
+      font-style: italic;
+    }
+
+    /* booking sidebar in REQUEST mode */
+    .booking-card {
+      position: sticky;
+      top: 96px;
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      border-radius: var(--r-xl);
+      padding: 26px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .booking-card .mode-strip {
+      margin: -26px -26px 18px;
+      padding: 11px 22px;
+      background: linear-gradient(95deg, var(--amber-soft), oklch(0.96 0.05 60));
+      color: var(--amber-deep);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--amber-soft);
+    }
+    .booking-card .mode-strip svg { width: 14px; height: 14px; }
+    .booking-card .price {
+      display: flex; align-items: baseline; gap: 7px;
+      margin-bottom: 4px;
+    }
+    .booking-card .amount {
+      font-family: var(--font-display);
+      font-size: 38px; font-weight: 500;
+      letter-spacing: -0.02em; line-height: 1;
+    }
+    .booking-card .unit { font-size: 14px; color: var(--ink-3); }
+    .booking-card .rating {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 13px; color: var(--ink-2); margin-bottom: 18px;
+    }
+    .booking-card .rating svg { width: 13px; height: 13px; color: var(--amber); fill: var(--amber); }
+
+    .slot-pick {
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .slot-pick .label {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+      margin-bottom: 4px;
+    }
+    .slot-pick .value {
+      font-family: var(--font-display);
+      font-size: 19px; font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .slot-pick .value em { font-style: italic; color: var(--terracotta); font-weight: 400; }
+    .slot-pick .meta { margin-top: 4px; font-size: 12.5px; color: var(--ink-3); }
+
+    .request-explainer {
+      display: flex; gap: 12px;
+      padding: 14px;
+      background: var(--bg-sunk);
+      border-radius: var(--r-md);
+      margin-bottom: 16px;
+    }
+    .request-explainer .ic {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--bg-elev);
+      color: var(--amber-deep);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .request-explainer .ic svg { width: 14px; height: 14px; }
+    .request-explainer .text { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; }
+    .request-explainer .text strong { color: var(--ink); display: block; font-size: 13px; margin-bottom: 2px; }
+
+    .micro-flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin: 16px 0 4px;
+    }
+    .micro-step {
+      text-align: center;
+      padding: 10px 6px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      background: var(--bg);
+      position: relative;
+    }
+    .micro-step .n {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      display: grid; place-items: center;
+      margin: 0 auto 4px;
+    }
+    .micro-step .t {
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .micro-step .s {
+      margin-top: 2px;
+      font-size: 10.5px;
+      color: var(--ink-3);
+      line-height: 1.3;
+    }
+
+    .booking-cta { margin-top: 18px; }
+    .booking-foot {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--ink-3);
+    }
+    .booking-foot strong { color: var(--ink-2); }
+
+    .host-line {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .host-line .who { flex: 1; min-width: 0; }
+    .host-line .name { font-weight: 600; font-size: 13.5px; }
+    .host-line .resp {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11.5px; color: var(--ink-3);
+      margin-top: 1px;
+    }
+    .host-line .resp .pulse-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--sage); display: inline-block;
+    }
+
+    @media (max-width: 1024px) {
+      .detail-content { grid-template-columns: 1fr; }
+      .booking-card { position: static; }
+      .gallery-strip { height: 280px; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topnav">
+    <div class="topnav-inner">
+      <a class="brand" href="#">
+        <div class="brand-mark">h</div>
+        <div class="brand-name">Home<em>Rest</em></div>
+      </a>
+      <div class="topnav-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Milano · Porta Romana · disponibile entro 1h</span>
+        <span class="kbd">⌘ K</span>
+      </div>
+      <div class="topnav-actions">
+        <a class="btn btn-ghost" href="#">Diventa host</a>
+        <button class="user-pill">
+          <div class="avatar sage">M</div>
+          <span class="name">Marco</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <nav class="crumbs animate-in" style="animation-delay: 60ms;">
+      <a href="#">Discover</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="#">Milano</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="#">Porta Romana</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <span class="current">Bagno via Lambro</span>
+    </nav>
+
+    <div class="animate-up" style="animation-delay: 100ms; margin-bottom: 18px;">
+      <div class="eyebrow amber">Listing #LST-0613 · Su richiesta</div>
+      <h1 class="display">Bagno via <em>Lambro</em>, design quieto.</h1>
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; color: var(--ink-2); font-size: 14px; margin-top: 6px;">
+        <span style="display:inline-flex; align-items:center; gap:5px; font-weight:600;">
+          <svg width="14" height="14" viewBox="0 0 24 24" style="color: var(--amber); fill: var(--amber);"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          4,9
+        </span>
+        <span style="color: var(--ink-3);">· 47 recensioni</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:var(--ink-4);"></span>
+        <span>Porta Romana · Piazza Medaglie d'Oro</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:var(--ink-4);"></span>
+        <span class="badge-pill badge-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Approvazione richiesta
+        </span>
+      </div>
+    </div>
+
+    <div class="gallery-strip animate-up" style="animation-delay: 160ms;">
+      <div class="tile hero"><div class="photo p1"></div></div>
+      <div class="tile"><div class="photo p2"></div></div>
+      <div class="tile"><div class="photo p3"></div></div>
+      <div class="tile"><div class="photo p4"></div></div>
+      <div class="tile"><div class="photo p5"></div></div>
+    </div>
+
+    <div class="detail-content">
+      <div class="animate-up" style="animation-delay: 220ms;">
+
+        <!-- Why approval -->
+        <div class="info-grid">
+          <div class="info-tile">
+            <div class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <h4>Host selettivo</h4>
+              <p>Sara legge ogni richiesta e risponde entro 30 minuti.</p>
+            </div>
+          </div>
+          <div class="info-tile sage">
+            <div class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+              <h4>Pre-autorizzazione Stripe</h4>
+              <p>Niente addebito finché Sara non conferma la richiesta.</p>
+            </div>
+          </div>
+          <div class="info-tile amber">
+            <div class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <h4>Risposta in 30 minuti</h4>
+              <p>Oltre il tempo limite, lo slot torna libero in automatico.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="description">
+          <p>Un piccolo bagno in stile <strong>milanese sobrio</strong>: piastrelle giallo paglierino, lavabo in pietra serena, una finestra che dà sul cortile. Sara ospita due, massimo tre persone al giorno per mantenere l'ambiente immacolato. La sua regola è semplice: presentarsi con un breve messaggio, lei risponde entro mezz'ora.</p>
+        </div>
+
+        <!-- Slot picker (compact view) -->
+        <h2 class="section-title">Scegli <em>l'orario</em></h2>
+        <p style="margin: 0 0 14px; color: var(--ink-3); font-size: 13.5px;">Lo slot resta bloccato per te durante l'attesa di approvazione (30 minuti).</p>
+        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;">
+          <button style="padding: 12px 4px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-elev); font-family: var(--font-mono); font-size: 12px; cursor: pointer;">14:00</button>
+          <button style="padding: 12px 4px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-elev); font-family: var(--font-mono); font-size: 12px; cursor: pointer;">14:30</button>
+          <button style="padding: 12px 4px; border: 1px solid var(--ink); border-radius: var(--r-md); background: var(--ink); color: var(--bg); font-family: var(--font-mono); font-size: 12px; cursor: pointer; position: relative;">15:00<span style="position:absolute; top: 5px; right: 5px; width: 5px; height: 5px; background: var(--amber); border-radius: 50%;"></span></button>
+          <button style="padding: 12px 4px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-sunk); color: var(--ink-4); font-family: var(--font-mono); font-size: 12px; text-decoration: line-through; cursor: not-allowed;">15:30</button>
+          <button style="padding: 12px 4px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-elev); font-family: var(--font-mono); font-size: 12px; cursor: pointer;">16:00</button>
+          <button style="padding: 12px 4px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-elev); font-family: var(--font-mono); font-size: 12px; cursor: pointer;">16:30</button>
+        </div>
+
+        <!-- House rules -->
+        <h2 class="section-title" style="margin-top: 36px;">Regole della casa di <em>Sara</em></h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px;">
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-2); padding: 6px 0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink-3);"><polyline points="20 6 9 17 4 12"/></svg>
+            Niente animali domestici nel bagno
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-2); padding: 6px 0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink-3);"><polyline points="20 6 9 17 4 12"/></svg>
+            Lasciare le scarpe all'ingresso
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-2); padding: 6px 0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink-3);"><polyline points="20 6 9 17 4 12"/></svg>
+            Slot massimo 30 minuti
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-2); padding: 6px 0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink-3);"><polyline points="20 6 9 17 4 12"/></svg>
+            Citofonare al cognome "Lombardi"
+          </div>
+        </div>
+
+      </div>
+
+      <!-- =================== BOOKING SIDEBAR ====================== -->
+      <aside class="booking-card animate-up" style="animation-delay: 280ms;">
+
+        <div class="mode-strip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12c0 4.97-4.03 9-9 9-2.61 0-4.96-1.11-6.6-2.89"/><path d="M3 12c0-4.97 4.03-9 9-9 2.61 0 4.96 1.11 6.6 2.89"/><polyline points="3 4 3 9 8 9"/><polyline points="21 20 21 15 16 15"/></svg>
+          Modalità su richiesta
+        </div>
+
+        <div class="price">
+          <span class="amount">€ 6</span>
+          <span class="unit">· per slot da 30 min</span>
+        </div>
+        <div class="rating">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <strong>4,9</strong>
+          <span style="color: var(--ink-3); text-decoration: underline; text-underline-offset: 2px; margin-left: 4px;">47 recensioni</span>
+        </div>
+
+        <div class="slot-pick">
+          <div class="label">Slot scelto</div>
+          <div class="value">Oggi · 15:00 — <em>15:30</em></div>
+          <div class="meta">Mercoledì 6 maggio · ora di Roma</div>
+        </div>
+
+        <div class="request-explainer">
+          <div class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="text">
+            <strong>Pagamento pre-autorizzato</strong>
+            Stripe blocca € 6,00 sulla carta. L'addebito avviene solo se Sara approva entro 30 minuti.
+          </div>
+        </div>
+
+        <div class="micro-flow">
+          <div class="micro-step">
+            <div class="n">1</div>
+            <div class="t">Invia</div>
+            <div class="s">Slot bloccato</div>
+          </div>
+          <div class="micro-step">
+            <div class="n">2</div>
+            <div class="t">Attendi</div>
+            <div class="s">Max 30 min</div>
+          </div>
+          <div class="micro-step">
+            <div class="n">3</div>
+            <div class="t">Indirizzo</div>
+            <div class="s">Se approvata</div>
+          </div>
+        </div>
+
+        <div class="price-lines" style="margin: 18px 0;">
+          <div class="price-row"><span>€ 6,00 × 1 slot</span><span>€ 6,00</span></div>
+          <div class="price-row"><span class="muted">Commissione piattaforma</span><span class="muted">Inclusa</span></div>
+          <div class="price-row total"><span>Pre-autorizzazione</span><span class="amount">€ 6,00</span></div>
+        </div>
+
+        <div class="booking-cta">
+          <button class="btn btn-accent btn-xl btn-block">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
+            Invia richiesta a Sara
+          </button>
+        </div>
+        <div class="booking-foot">
+          Non ti verrà addebitato nulla finché <strong>Sara non approva</strong>.<br/>
+          Indirizzo esatto rivelato solo dopo la conferma.
+        </div>
+
+        <div class="host-line">
+          <div class="avatar sage">S</div>
+          <div class="who">
+            <div class="name">Sara · Host privato</div>
+            <div class="resp"><span class="pulse-dot"></span> In genere risponde in 12 minuti</div>
+          </div>
+          <button class="btn btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Scrivi
+          </button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div>HomeRest · Mockup US-010 · Modalità su richiesta</div>
+    <div class="links">
+      <a href="confirmation-pending.html">Conferma · in attesa</a>
+      <a href="confirmation-rejected.html">Rifiutata</a>
+      <a href="confirmation-expired.html">Scaduta</a>
+      <a href="host-requests.html">Inbox host</a>
+      <a href="host-requests-empty.html">Inbox vuota</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -7,6 +7,8 @@ import type Stripe from "stripe";
 
 export const dynamic = "force-dynamic";
 
+export const HOST_DECISION_WINDOW_MIN = 30;
+
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
   if (!signature) {
@@ -33,7 +35,6 @@ export async function POST(request: Request) {
   }
 
   if (event.type !== "checkout.session.completed") {
-    // Mark as processed to avoid re-checking on retries.
     try {
       await prisma.stripeEvent.create({
         data: { id: event.id, type: event.type },
@@ -56,7 +57,9 @@ export async function POST(request: Request) {
   const booking = await prisma.booking.findUnique({
     where: { id: bookingId },
     include: {
-      listing: { select: { id: true, title: true, hostId: true } },
+      listing: {
+        select: { id: true, title: true, hostId: true, bookingMode: true },
+      },
       user: { select: { id: true, email: true, name: true } },
     },
   });
@@ -64,8 +67,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Booking not found" }, { status: 404 });
   }
 
-  if (booking.status === "CONFIRMED") {
-    // Still mark the event processed so Stripe stops retrying.
+  // Already-progressed bookings: just record the event so Stripe stops retrying.
+  if (
+    booking.status === "CONFIRMED" ||
+    booking.status === "PENDING_HOST_APPROVAL"
+  ) {
     try {
       await prisma.stripeEvent.create({
         data: { id: event.id, type: event.type },
@@ -73,7 +79,11 @@ export async function POST(request: Request) {
     } catch {
       // ignore race
     }
-    return NextResponse.json({ received: true, alreadyConfirmed: true });
+    return NextResponse.json({
+      received: true,
+      alreadyProcessed: true,
+      status: booking.status,
+    });
   }
 
   const paymentIntentId =
@@ -81,8 +91,12 @@ export async function POST(request: Request) {
       ? session.payment_intent
       : (session.payment_intent?.id ?? null);
 
-  // Atomic: mark event processed and confirm booking together. If the update
-  // fails Stripe will retry and we will reprocess.
+  const isRequest = booking.listing.bookingMode === "REQUEST";
+  const now = new Date();
+  const hostDecisionDeadline = isRequest
+    ? new Date(now.getTime() + HOST_DECISION_WINDOW_MIN * 60_000)
+    : null;
+
   try {
     await prisma.$transaction([
       prisma.stripeEvent.create({
@@ -90,17 +104,22 @@ export async function POST(request: Request) {
       }),
       prisma.booking.update({
         where: { id: booking.id },
-        data: {
-          status: "CONFIRMED",
-          stripePaymentIntentId: paymentIntentId,
-          stripeCheckoutSessionId: session.id,
-          confirmedAt: new Date(),
-        },
+        data: isRequest
+          ? {
+              status: "PENDING_HOST_APPROVAL",
+              stripePaymentIntentId: paymentIntentId,
+              stripeCheckoutSessionId: session.id,
+              hostDecisionDeadline,
+            }
+          : {
+              status: "CONFIRMED",
+              stripePaymentIntentId: paymentIntentId,
+              stripeCheckoutSessionId: session.id,
+              confirmedAt: now,
+            },
       }),
     ]);
   } catch (err) {
-    // If both rows already exist (concurrent retry succeeded first), treat as
-    // duplicate; otherwise surface the error so Stripe retries.
     const recheck = await prisma.stripeEvent.findUnique({
       where: { id: event.id },
     });
@@ -119,24 +138,37 @@ export async function POST(request: Request) {
   });
 
   if (host) {
+    const notifier = getBookingConfirmedNotifier();
+    const basePayload = {
+      bookingId: booking.id,
+      listingId: booking.listing.id,
+      listingTitle: booking.listing.title,
+      hostId: host.id,
+      hostEmail: host.email,
+      guestName: booking.user.name,
+      guestEmail: booking.user.email,
+      startsAt: booking.startsAt,
+      endsAt: booking.endsAt,
+      amountCents: booking.amountCents,
+      platformFeeCents: booking.platformFeeCents,
+    };
     try {
-      await getBookingConfirmedNotifier().notifyHost({
-        bookingId: booking.id,
-        listingId: booking.listing.id,
-        listingTitle: booking.listing.title,
-        hostId: host.id,
-        hostEmail: host.email,
-        guestName: booking.user.name,
-        guestEmail: booking.user.email,
-        startsAt: booking.startsAt,
-        endsAt: booking.endsAt,
-        amountCents: booking.amountCents,
-        platformFeeCents: booking.platformFeeCents,
-      });
+      if (isRequest) {
+        await notifier.notifyHostOfRequest?.({
+          ...basePayload,
+          hostDecisionDeadline: hostDecisionDeadline!,
+        });
+      } else {
+        await notifier.notifyHost(basePayload);
+      }
     } catch (err) {
-      console.error("[booking-confirmed] notifier failed", err);
+      console.error("[booking-webhook] notifier failed", err);
     }
   }
 
-  return NextResponse.json({ received: true, bookingId: booking.id });
+  return NextResponse.json({
+    received: true,
+    bookingId: booking.id,
+    status: isRequest ? "PENDING_HOST_APPROVAL" : "CONFIRMED",
+  });
 }

@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HomeRest — Richiesta scaduta · Bagno via Lambro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 36px;
+      align-items: start;
+    }
+    .hero-expired {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 32px;
+      border-radius: var(--r-xl);
+      background: var(--ink);
+      color: var(--bg);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .hero-expired::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, oklch(0.42 0.10 70 / 0.4) 0, transparent 60%),
+        radial-gradient(ellipse at 100% 100%, oklch(0.30 0.08 30 / 0.5) 0, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-expired::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(135deg, transparent 0 28px, rgba(255,255,255,0.025) 28px 29px);
+      pointer-events: none;
+    }
+    .hero-expired .copy { position: relative; z-index: 1; }
+    .hero-expired .copy h2 {
+      margin: 8px 0 8px;
+      font-family: var(--font-display);
+      font-size: 36px; font-weight: 500;
+      letter-spacing: -0.02em; line-height: 1.05;
+      color: #fff;
+    }
+    .hero-expired .copy h2 em { font-style: italic; color: var(--amber); font-weight: 400; }
+    .hero-expired .copy p { margin: 0 0 14px; color: rgba(255,255,255,0.78); font-size: 15px; max-width: 52ch; }
+
+    .hero-expired .countdown-ring {
+      --ring-color: var(--amber);
+      --track-color: rgba(255,255,255,0.12);
+      position: relative; z-index: 1;
+    }
+    .hero-expired .countdown-ring::before {
+      background: var(--ink);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+    .hero-expired .countdown-ring .min { color: #fff; font-size: 32px; }
+    .hero-expired .countdown-ring .label { color: rgba(255,255,255,0.55); }
+
+    .badge-on-dark {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 11px;
+      border-radius: var(--r-pill);
+      background: rgba(255,255,255,0.1);
+      color: var(--amber);
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .why-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .why {
+      padding: 18px;
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      border-radius: var(--r-lg);
+    }
+    .why .ic {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--amber-soft);
+      color: var(--amber-deep);
+      display: grid; place-items: center;
+      margin-bottom: 12px;
+    }
+    .why .ic svg { width: 17px; height: 17px; }
+    .why h4 {
+      margin: 0 0 6px;
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .why p { margin: 0; font-size: 13px; color: var(--ink-3); line-height: 1.5; }
+
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 1fr; }
+      .hero-expired { grid-template-columns: 1fr; text-align: center; padding: 28px 22px; }
+      .why-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topnav">
+    <div class="topnav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">h</div>
+        <div class="brand-name">Home<em>Rest</em></div>
+      </a>
+      <div class="topnav-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Ricerca: bagni, docce, cucine…</span>
+        <span class="kbd">⌘ K</span>
+      </div>
+      <div class="topnav-actions">
+        <a class="btn btn-ghost" href="#">Le mie prenotazioni</a>
+        <button class="user-pill">
+          <div class="avatar sage">M</div>
+          <span class="name">Marco</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-narrow">
+
+    <nav class="crumbs animate-in" style="animation-delay: 60ms;">
+      <a href="index.html">Listing</a>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      <span class="current">Richiesta scaduta</span>
+    </nav>
+
+    <div class="animate-up" style="animation-delay: 100ms; margin-bottom: 28px;">
+      <div class="eyebrow">Richiesta #BKR-7821 · Tempo scaduto</div>
+      <h1 class="display">Sara non ha <em>risposto</em> in tempo.</h1>
+    </div>
+
+    <div class="layout">
+      <div>
+
+        <section class="hero-expired animate-up" style="animation-delay: 160ms;">
+          <div class="countdown-ring full">
+            <div class="inner">
+              <span class="min">00:00</span>
+              <span class="label">Scaduta</span>
+            </div>
+          </div>
+          <div class="copy">
+            <span class="badge-on-dark">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Auto-rifiutata · 30 min trascorsi
+            </span>
+            <h2>I 30 minuti sono finiti, lo slot è di nuovo <em>libero</em>.</h2>
+            <p>Sara non ha risposto entro le 15:01. La richiesta si annulla in automatico per non bloccare lo slot ad altri ospiti. Stripe ha rilasciato la pre-autorizzazione di € 6,00: nessun addebito sulla tua carta.</p>
+          </div>
+        </section>
+
+        <section class="card animate-up" style="animation-delay: 220ms;">
+          <div class="card-header">
+            <h2>Cosa è <em>successo</em></h2>
+            <span class="badge-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Linea del tempo</span>
+          </div>
+
+          <div class="timeline">
+            <div class="tl-row done">
+              <div class="tl-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="tl-content">
+                <div class="tl-title">Richiesta inviata</div>
+                <div class="tl-meta">14:31 · Pre-auth Stripe ch_3pXyZ confermata</div>
+              </div>
+            </div>
+            <div class="tl-row done">
+              <div class="tl-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <div class="tl-content">
+                <div class="tl-title">Promemoria a Sara</div>
+                <div class="tl-meta">14:46 · 15 min alla scadenza</div>
+                <div class="tl-detail">Push + email ripetute. Sara non ha aperto la notifica.</div>
+              </div>
+            </div>
+            <div class="tl-row fail">
+              <div class="tl-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+              <div class="tl-content">
+                <div class="tl-title">Auto-scaduta</div>
+                <div class="tl-meta">15:01 · Tempo limite 30 min</div>
+                <div class="tl-detail">La richiesta è stata chiusa in automatico per liberare lo slot.</div>
+              </div>
+            </div>
+            <div class="tl-row done">
+              <div class="tl-bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="tl-content">
+                <div class="tl-title">Pre-auth annullata</div>
+                <div class="tl-meta">15:01 · Stripe rilascio confermato</div>
+                <div class="tl-detail">€ 6,00 tornano disponibili sulla tua Visa entro 1–3 giorni.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top: 28px;">
+          <h3 class="section-title" style="margin-bottom: 14px;">Perché capita la <em>scadenza</em></h3>
+          <div class="why-list">
+            <div class="why">
+              <div class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h4>Tutela dello slot</h4>
+              <p>Bloccare uno slot a tempo indeterminato penalizzerebbe altri ospiti che vogliono prenotare la stessa fascia.</p>
+            </div>
+            <div class="why">
+              <div class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h4>Rispetto della carta</h4>
+              <p>Stripe non può tenere una pre-auth oltre i 30 minuti senza rischio di farti vedere il blocco più a lungo del dovuto.</p>
+            </div>
+            <div class="why">
+              <div class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </div>
+              <h4>Patto fra host e ospiti</h4>
+              <p>Gli host che hanno scelto la modalità su richiesta sanno che hanno 30 minuti per rispondere — un patto chiaro con la community.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right: summary -->
+      <aside class="card animate-up" style="animation-delay: 220ms; padding: 24px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;">Riepilogo</div>
+
+        <div class="listing-mini" style="border: 0; padding: 0; margin-bottom: 18px;">
+          <div class="thumb"><div class="photo p1"></div></div>
+          <div class="meta">
+            <h3 class="title">Bagno via Lambro</h3>
+            <div class="zone">Milano · Porta Romana</div>
+            <div class="pills">
+              <span class="badge-pill" style="background: var(--ink); color: var(--amber); border-color: var(--ink);">Scaduta</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-lines">
+          <div class="price-row"><span>€ 6,00 × 1 slot</span><span>€ 6,00</span></div>
+          <div class="price-row"><span class="muted">Importo addebitato</span><span style="color: var(--sage-deep); font-weight: 600;">€ 0,00</span></div>
+          <div class="price-row total"><span>Saldo carta</span><span class="amount" style="color: var(--sage-deep);">€ 0,00</span></div>
+        </div>
+
+        <a class="btn btn-accent btn-lg btn-block" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><polyline points="21 3 21 8 16 8"/></svg>
+          Riprova ora
+        </a>
+        <a class="btn btn-block" href="#" style="margin-top: 8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          Cerca alternative istantanee
+        </a>
+
+        <div style="display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; background: var(--bg-sunk); border-radius: var(--r-md); font-size: 12px; color: var(--ink-3); line-height: 1.5; margin-top: 16px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--terracotta); margin-top: 1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Suggerimento: filtra i listing con <strong>"Conferma istantanea"</strong> per evitare attese.</span>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div>HomeRest · US-010 · Stato: EXPIRED</div>
+    <div class="links">
+      <a href="index.html">← Listing detail</a>
+      <a href="confirmation-pending.html">Stato in attesa</a>
+      <a href="confirmation-rejected.html">Stato rifiutato</a>
+    </div>
+  </footer>
+</body>
+</html>

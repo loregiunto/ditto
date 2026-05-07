@@ -82,13 +82,17 @@ export function ListingDetail({
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isInstant = listing.bookingMode === "INSTANT";
 
   async function handleBook() {
     if (!selectedSlot || submitting) return;
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch("/api/bookings/instant/checkout", {
+      const endpoint = isInstant
+        ? "/api/bookings/instant/checkout"
+        : "/api/bookings/request/checkout";
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -106,6 +110,7 @@ export function ListingDetail({
           outside_rules: "Lo slot non rientra nella disponibilità dell'host.",
           bad_granularity: "Durata slot non valida.",
           not_instant: "Questo bagno non accetta prenotazioni istantanee.",
+          not_request: "Questo bagno non accetta richieste di prenotazione.",
         };
         setError(messages[code] ?? "Impossibile avviare il pagamento.");
         if (code === "slot_unavailable") {
@@ -139,7 +144,6 @@ export function ListingDetail({
         order: index,
       }));
 
-  const isInstant = listing.bookingMode === "INSTANT";
   const reviewLabel =
     listing.reviews.totalCount > 0
       ? `${listing.reviews.totalCount} recensioni`
@@ -475,7 +479,13 @@ export function ListingDetail({
                     onClick={handleBook}
                     data-testid="book-now-cta"
                   >
-                    {submitting ? "Avvio pagamento…" : "Prenota ora"}
+                    {submitting
+                      ? isInstant
+                        ? "Avvio pagamento…"
+                        : "Invio richiesta…"
+                      : isInstant
+                        ? "Prenota ora"
+                        : "Invia richiesta"}
                     <ArrowRight aria-hidden="true" />
                   </button>
                 ) : (
@@ -491,11 +501,12 @@ export function ListingDetail({
                   <Lock aria-hidden="true" />
                   {error}
                 </div>
-              ) : isAuthenticated && isInstant ? (
+              ) : isAuthenticated ? (
                 <div className={styles.bookingTooltip}>
                   <Lock aria-hidden="true" />
-                  Pagamento sicuro via Stripe. L&apos;indirizzo esatto sarà
-                  svelato dopo la conferma.
+                  {isInstant
+                    ? "Pagamento sicuro via Stripe. L'indirizzo esatto sarà svelato dopo la conferma."
+                    : "Pagamento pre-autorizzato via Stripe. Nessun addebito finché l'host non approva entro 30 minuti."}
                 </div>
               ) : null}
 

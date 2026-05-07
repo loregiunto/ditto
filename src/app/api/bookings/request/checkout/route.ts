@@ -74,9 +74,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Listing not found" }, { status: 404 });
   }
 
-  if (listing.bookingMode !== "INSTANT") {
+  if (listing.bookingMode !== "REQUEST") {
     return NextResponse.json(
-      { error: "Listing not bookable instantly", code: "not_instant" },
+      { error: "Listing is not request-based", code: "not_request" },
       { status: 422 },
     );
   }
@@ -143,26 +143,25 @@ export async function POST(request: Request) {
             unit_amount: booking.amountCents,
             product_data: {
               name: listing.title,
-              description: `Prenotazione ${startsAt.toISOString()} - ${endsAt.toISOString()}`,
+              description: `Richiesta prenotazione ${startsAt.toISOString()} - ${endsAt.toISOString()}`,
             },
           },
         },
       ],
-      // NOTE: application_fee_amount requires Stripe Connect (transfer_data
-      // or on_behalf_of). The platform fee is tracked on the Booking row;
-      // the Connect routing will be wired in US-011.
+      payment_intent_data: {
+        capture_method: "manual",
+      },
       metadata: {
         bookingId: booking.id,
         listingId: listing.id,
         userId: user.id,
+        bookingMode: "REQUEST",
       },
       success_url: `${appUrl}/bookings/${booking.id}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/listings/${listing.id}?checkout=cancelled`,
       expires_at: Math.floor(pendingExpiresAt.getTime() / 1000),
     });
   } catch (err) {
-    // If Stripe fails the slot would stay blocked for PENDING_BOOKING_TTL.
-    // Cancel the booking immediately so other guests can retry.
     await prisma.booking.update({
       where: { id: booking.id },
       data: { status: "CANCELLED", pendingExpiresAt: null },
